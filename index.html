@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEKEYS</title>
+
+    <style>
+        @font-face {
+            font-family: 'Fuente-Personalizada';
+            src: url('fonts/Pixel-Regular.ttf') format('truetype');
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-box img {
+            height: 50px;
+        }
+
+        h1 {
+            font-family: 'Fuente-Personalizada', sans-serif;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .barra-busqueda {
+            width: 250px;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #000000;
+            border-radius: 4px;
+            outline: none;
+        }
+
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-actions img {
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #000000;
+        }
+
+        .nav-bar a {
+            text-decoration: none;
+            color: #000000;
+            font-weight: bold;
+            font-family: sans-serif;
+        }
+
+        .nav-bar a:hover {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+
+        <div class="header-left">
+            <div class="logo-box">
+                <img src="img/logo.png" alt="Logo de APEKEYS">
+                <h1>APEKEYS</h1>
+            </div>
+            <input type="text" class="barra-busqueda" placeholder="Buscar...">
+        </div>
+
+        <div class="header-actions">
+            <a href="#"><img src="img/User.png" alt="Cuenta"></a>
+            <a href="#">
+                <img src="img/Cart.png" alt="Carrito">
+            </a>
+        </div>
+
+    </div>
+
+    <nav class="nav-bar">
+        <a href="#">Inicio</a>
+        <a href="#">Productos</a>
+        <a href="#">Software</a>
+        <a href="#">Categorías</a>
+    </nav>
+
+</header>
+
+
+</body>
+<footer>
+    2026 APEKEYS - Todos los derechos reservados
+</footer>
+</html>
