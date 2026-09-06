@@ -4,83 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APEKEYS</title>
-
-    <style>
-        @font-face {
-            font-family: 'Fuente-Personalizada';
-            src: url('fonts/Pixel-Regular.ttf') format('truetype');
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 10px;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo-box {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo-box img {
-            height: 50px;
-        }
-
-        h1 {
-            font-family: 'Fuente-Personalizada', sans-serif;
-            margin: 0;
-            font-size: 24px;
-        }
-
-        .barra-busqueda {
-            width: 250px;
-            padding: 8px 12px;
-            font-size: 14px;
-            border: 1px solid #000000;
-            border-radius: 4px;
-            outline: none;
-        }
-
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .header-actions img {
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
-        }
-
-        .nav-bar {
-            display: flex;
-            gap: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #000000;
-        }
-
-        .nav-bar a {
-            text-decoration: none;
-            color: #000000;
-            font-weight: bold;
-            font-family: sans-serif;
-        }
-
-        .nav-bar a:hover {
-            color: #555;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/png" href="img/logo.png">
+
+    <!-- LIBRERIAS DE BOOTSTRAP JONAS 05/09-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -107,13 +36,25 @@
         <a href="productos.html">Productos</a>
         <a href="software.html">Software</a>
         <a href="categorias.html">Categorías</a>
+
+        <!-- Contenedor del menu Desplegable JONAS 05/09 -->
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Categorías</a>
+            <!-- El desplegable JONAS 05/09 -->
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Terror</a></li>
+                <li><a class="dropdown-item" href="#">Ficción</a></li>
+                <li><a class="dropdown-item" href="#">Multijugador</a></li>
+                <li><a class="dropdown-item" href="#">Plataformas</a></li>
+                <li><a class="dropdown-item" href="#">RPG</a></li>
+            </ul>
+        </div>
     </nav>
 
 </header>
-
-
-</body>
+<!-- El footer debe estar dentro del body, no fuera de él. He corregido la posición del footer para que esté dentro del body y se muestre correctamente en la página. JONAS 05/09-->
 <footer>
     <p>&copy; 2026 APEKEYS - Todos los derechos reservados</p>
 </footer>
+</body>
 </html>
