@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +10,11 @@
     <link rel="icon" type="image/png" href="img/logo.png">
 </head>
 <body>
-<div class="container-fluid min-vh-100 p-0">
-    <div class="row g-0 min-vh-100">
-        <div class="col-md-6 d-flex flex-column justify-content-center align-items-start p-5 bg-light">
-            <div class="card shadow p-4 mx-auto mx-md-0" style="width: 800%; max-width: 800px;">
+<div class="container-fluid vh-100 p-0 overflow-hidden">
+    <div class="row g-0 h-100">
+        <!-- COLUMNA 1: Formulario -->
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center p-4 bg-light h-100">
+            <div class="card shadow p-4 w-100" style="max-width: 450px;">
                 <h2 class="text-center mb-4">Iniciar Sesión</h2>
 
                 <form id="loginForm">
@@ -28,7 +29,7 @@
 
                     <div id="mensaje" class="mb-3"></div>
 
-                    <!-- Botones con espaciado correcto -->
+                    <!-- Botones -->
                     <button type="submit" class="btn btn-primary w-100 mb-3">Iniciar Sesión</button>
                     <button class="btn btn-sm btn-outline-secondary w-100" type="button">Iniciar Sesión con Google</button>
                 </form>
@@ -36,14 +37,13 @@
         </div>
 
         <!-- COLUMNA 2: Banner Vertical (Lado Derecho) -->
-        <div class="col-md-6 d-none d-md-block min-vh-100">
-            <img src="img/banner_holder.jpg" alt="banner_holder" class="100 h-100" style="object-fit: fill;">
+        <div class="col-md-6 d-none d-md-block h-100">
+            <img src="img/banner_holder.jpg" alt="banner_holder" class="w-100 h-100" style="object-fit: cover;">
         </div>
 
     </div>
 </div>
-</body>
-</html>
+
 <script>
     const loginForm = document.getElementById("loginForm");
 
@@ -53,7 +53,7 @@
         const password = document.getElementById("password").value;
         const mensaje = document.getElementById("mensaje");
 
-        try{
+        try {
             const respuesta = await fetch(
                 "http://localhost:8080/api/auth/login", {
                     method: "POST",
@@ -68,34 +68,25 @@
             );
 
             const datos = await respuesta.json();
-            console.log(datos);
-            console.log("***********");
-            console.log(respuesta);
 
-            if(respuesta.ok){
-                //guardar el token
+            if (respuesta.ok) {
+                // Guardar token y usuario
                 localStorage.setItem("token", datos.token);
-                //guardar datos del usuario
                 localStorage.setItem("usuario", JSON.stringify(datos.usuario));
 
-                //enviar al index
-                window.location.href="mantenedor-producto.html";
-            }else{
-                mensaje.className ="alert alert-danger";
+                // Redirigir
+                window.location.href = "mantenedor-producto.html";
+            } else {
+                mensaje.className = "alert alert-danger";
                 mensaje.textContent = datos.mensaje || "Correo o contraseña incorrectas";
             }
 
-
-        }catch{
+        } catch (error) {
             console.log(error);
             mensaje.className = "alert alert-danger";
             mensaje.textContent = "No se pudo conectar con el servidor";
         }
-
-
-
     });
-
-
-
 </script>
+</body>
+</html>
