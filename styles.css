@@ -9,51 +9,59 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
 
 .header-left {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 .logo-box {
     display: flex;
     align-items: center;
     gap: 20px;
+    transform: translateX(10px);
 }
 
 .logo-box img {
     height: 50px;
+    transform: translateX(10px);
 }
 
 h1 {
     font-family: 'Fuente-Personalizada', sans-serif;
-    margin: 0;
-    font-size: 24px;
+    font-size: 20px;
+    margin-bottom: 15px; /* Distancia prudente debajo del título */
+    transform: translateY(10px)
 }
 
 .barra-busqueda {
-    width: 250px;
+    width: 200px;
     padding: 8px 12px;
     font-size: 14px;
     border: 1px solid #000000;
     border-radius: 4px;
     outline: none;
+    /* Si necesitas moverlos horizontalmente, usa margin en lugar de transform duplicados */
+    margin-left: 50px; 
 }
 
 
-.header-actions {
+.header-actions { 
     display: flex;
     align-items: center;
     gap: 15px;
+    margin-left: 5px;
 }
 
 .header-actions img {
     width: 28px;
     height: 28px;
     cursor: pointer;
+    align-items: center;
+    transform: translateX(-10px); /* Cambia -5px según qué tan a la izquierda lo quieras */
 }
 
 .nav-bar {
@@ -61,6 +69,7 @@ h1 {
     gap: 20px;
     padding-top: 10px;
     border-top: 1px solid #000000;
+
 }
 
 .nav-bar a {
@@ -68,10 +77,23 @@ h1 {
     color: #000000;
     font-weight: bold;
     font-family: sans-serif;
+    margin-left: 20px; 
 }
 
 .nav-bar a:hover {
-    color: #555;
+    color: #c00e0e;
+}
+
+.carrusel-pequeno {
+    width: 1000px; /* Cambia a 50px si realmente querías ese tamaño miniatura */
+    max-width: 100%; /* Evita que se desborde en celulares */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.carrusel-pequeno img {
+    width: 100%;
+    height: auto; /* Mantiene la proporción de la imagen */
 }
 
 /* Quita el margen o padding extra que Bootstrap le pone al contenedor dropdown */
@@ -83,3 +105,4 @@ h1 {
 .dropdown-menu a {
     font-weight: normal; /* Para que las subcategorías no se vean en negrita */
 }
+
