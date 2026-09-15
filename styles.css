@@ -16,6 +16,7 @@
     display: flex;
     align-items: center;
     gap: 15px;
+    color: #f4efef;
 }
 
 .logo-box {
