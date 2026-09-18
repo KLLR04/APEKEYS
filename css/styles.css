@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'Fuente-Personalizada';
-    src: url('fonts/Pixel-Regular.ttf') format('truetype');
+    src: url('../fonts/Pixel-Regular.ttf') format('truetype');
 }
 
 .header-top {
