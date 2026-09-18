@@ -1,13 +1,402 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos | APEKEYS</title>
+  <link rel="icon" type="image/png" href="img/logo.png">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- BOOTSTRAP 5.3.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
-<body>
-    <h1>
-    Productos
-    </h1>
+<body style="background-color: #2d3137;" class="text-white">
+
+  <!-- CABECERA -->
+  <header class="bg-dark text-white p-2 border-bottom border-secondary">
+    <div class="header-top container-fluid">
+      <div class="header-left">
+        <div class="logo-box">
+          <img src="img/logo.png" alt="Logo de APEKEYS" onerror="this.style.display='none'">
+          <h1 class="m-0 text-white">APEKEYS</h1>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <span class="small text-secondary me-2" id="navUsuario">Invitado</span>
+        <a href="login.html" class="text-white text-decoration-none me-2" id="linkCuenta">
+          <img src="img/User.png" alt="Cuenta" width="28" height="28" onerror="this.alt='Cuenta'">
+        </a>
+        <button class="btn btn-outline-danger btn-sm d-none me-2" id="btnSalir">Salir</button>
+        <a href="carrito.html" class="text-white text-decoration-none">
+          <img src="img/Cart.png" alt="Carrito" width="28" height="28" onerror="this.alt='Carrito'">
+        </a>
+      </div>
+    </div>
+
+    <!-- NAVEGACIÓN -->
+    <nav class="navbar navbar-expand border-top border-secondary mt-2">
+      <div class="container-fluid justify-content-start">
+        <a class="btn btn-outline-secondary text-white me-2" href="index.html">Inicio</a>
+        <a class="btn btn-outline-success me-2" href="productos.html">Productos</a>
+        <a class="btn btn-outline-secondary text-white me-2" href="software.html">Software</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="container py-4">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <div>
+        <h1 class="h3 mb-0 text-white">Catálogo de Juegos</h1>
+        <p class="text-secondary small mb-0" id="subtitulo">Explora las keys digitales disponibles.</p>
+      </div>
+      <!-- Botón visible solo si el usuario ingresado es Admin -->
+      <button class="btn btn-primary d-none" id="btnNuevo">+ Nuevo Juego</button>
+    </div>
+
+    <!-- FILTROS Y BÚSQUEDA -->
+    <div class="row g-2 mb-4">
+      <div class="col-sm-7">
+        <input type="search" class="form-control bg-dark text-white border-secondary" id="buscador" maxlength="60"
+               placeholder="Buscar juego por nombre, código o categoría...">
+      </div>
+      <div class="col-sm-5">
+        <select class="form-select bg-dark text-white border-secondary" id="filtroCategoria">
+          <option value="">Todas las categorías</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="aviso" class="alert d-none"></div>
+
+    <!-- FORMULARIO DE AGREGAR/EDITAR (Solo visible para Admin) -->
+    <div class="card bg-dark text-white border-secondary mb-4 d-none" id="panelForm">
+      <div class="card-body">
+        <h2 class="h5 card-title text-white" id="tituloForm">Nuevo Producto</h2>
+        <div id="errorForm" class="alert alert-danger d-none"></div>
+        <input type="hidden" id="prodId">
+
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label for="prodCodigo" class="form-label">Código (SKU)</label>
+            <input type="text" class="form-control bg-secondary text-white border-0" id="prodCodigo" placeholder="GAME-001">
+          </div>
+          <div class="col-md-5">
+            <label for="prodNombre" class="form-label">Nombre del Juego</label>
+            <input type="text" class="form-control bg-secondary text-white border-0" id="prodNombre">
+          </div>
+          <div class="col-md-4">
+            <label for="prodCategoria" class="form-label">Categoría</label>
+            <input type="text" class="form-control bg-secondary text-white border-0" id="prodCategoria" list="sugerencias">
+            <datalist id="sugerencias"></datalist>
+          </div>
+          <div class="col-md-3">
+            <label for="prodPrecio" class="form-label">Precio ($ CLP)</label>
+            <input type="number" class="form-control bg-secondary text-white border-0" id="prodPrecio" min="0">
+          </div>
+          <div class="col-md-3">
+            <label for="prodStock" class="form-label">Keys Disponibles (Stock)</label>
+            <input type="number" class="form-control bg-secondary text-white border-0" id="prodStock" min="0">
+          </div>
+          <div class="col-md-6 d-flex align-items-end">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="prodActivo" checked>
+              <label class="form-check-label" for="prodActivo">Disponible en tienda</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 d-flex gap-2">
+          <button type="button" class="btn btn-success" id="btnGuardar">Guardar Juego</button>
+          <button type="button" class="btn btn-outline-light" id="btnCancelar">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENEDOR DE TARJETAS DE PRODUCTO -->
+    <div class="row g-3" id="galeriaProductos">
+      <!-- Se llena dinámicamente con JS -->
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="text-center text-white-50 py-3 border-top border-secondary mt-5">
+    <p class="mb-0">&copy; 2026 APEKEYS - Todos los derechos reservados</p>
+  </footer>
+
+  <!-- LÓGICA EN JAVASCRIPT (RECICLADA DE CLASES Y ADAPTADA A APEKEYS) -->
+  <script>
+    /* SEED DE JUEGOS INICIALES */
+    const SEED_PRODUCTOS = [
+      { id: 1, codigo: "JK-001", nombre: "Elden Ring", categoria: "RPG", precio: 45000, stock: 10, activo: true },
+      { id: 2, codigo: "JK-002", nombre: "Resident Evil 4 Remake", categoria: "Terror", precio: 38000, stock: 5, activo: true },
+      { id: 3, codigo: "JK-003", nombre: "Cyberpunk 2077", categoria: "Ficción", precio: 29990, stock: 15, activo: true },
+      { id: 4, codigo: "JK-004", nombre: "It Takes Two", categoria: "Multijugador", precio: 19990, stock: 8, activo: true },
+      { id: 5, codigo: "JK-005", nombre: "Hollow Knight", categoria: "Plataformas", precio: 9500, stock: 20, activo: true },
+      { id: 6, codigo: "JK-006", nombre: "Silent Hill 2 Remake", categoria: "Terror", precio: 42000, stock: 0, activo: false }
+    ];
+
+    const KEY_SESION = "inv_sesion";
+    const KEY_PRODUCTOS = "inv_productos";
+
+    let productos = [];
+    let esAdmin = false;
+
+    const sesion = leerSesion();
+
+    if (sesion) {
+      esAdmin = sesion.rol === "admin";
+      document.getElementById("navUsuario").textContent = sesion.nombre;
+      document.getElementById("btnSalir").classList.remove("d-none");
+      
+      if (esAdmin) {
+        document.getElementById("subtitulo").textContent = "Modo Administrador: Puedes agregar, editar o eliminar juegos.";
+        document.getElementById("btnNuevo").classList.remove("d-none");
+      }
+    }
+
+    productos = cargarProductos();
+    llenarCategorias();
+    pintarGaleria();
+
+    /* FUNCIONES DE SESIÓN */
+    function leerSesion() {
+      try {
+        const s = JSON.parse(sessionStorage.getItem(KEY_SESION));
+        if (!s || !s.usuario || !s.rol) return null;
+        if (s.expira && Date.now() > s.expira) {
+          sessionStorage.removeItem(KEY_SESION);
+          return null;
+        }
+        return s;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    document.getElementById("btnSalir").addEventListener("click", function () {
+      sessionStorage.removeItem(KEY_SESION);
+      window.location.reload();
+    });
+
+    /* MANEJO DE DATOS */
+    function cargarProductos() {
+      const guardados = localStorage.getItem(KEY_PRODUCTOS);
+      if (guardados) {
+        try { return JSON.parse(guardados); } catch (e) { }
+      }
+      localStorage.setItem(KEY_PRODUCTOS, JSON.stringify(SEED_PRODUCTOS));
+      return SEED_PRODUCTOS.slice();
+    }
+
+    function guardarProductos() {
+      localStorage.setItem(KEY_PRODUCTOS, JSON.stringify(productos));
+    }
+
+    /* MOSTRAR PRODUCTOS EN FORMA DE TARJETAS */
+    function pintarGaleria() {
+      const contenedor = document.getElementById("galeriaProductos");
+      const texto = document.getElementById("buscador").value.trim().toLowerCase();
+      const categoria = document.getElementById("filtroCategoria").value;
+
+      const filtrados = productos.filter(function (p) {
+        const okTexto = !texto ||
+          p.nombre.toLowerCase().includes(texto) ||
+          p.codigo.toLowerCase().includes(texto) ||
+          p.categoria.toLowerCase().includes(texto);
+        return okTexto && (!categoria || p.categoria === categoria);
+      });
+
+      contenedor.replaceChildren();
+
+      if (filtrados.length === 0) {
+        const divMsg = document.createElement("div");
+        divMsg.className = "col-12 text-center text-secondary py-5";
+        divMsg.textContent = "No se encontraron juegos que coincidan con la búsqueda.";
+        contenedor.appendChild(divMsg);
+        return;
+      }
+
+      filtrados.forEach(function (p) {
+        const col = document.createElement("div");
+        col.className = "col-md-4 col-sm-6";
+
+        const card = document.createElement("div");
+        card.className = "card h-100 bg-dark text-white border-secondary shadow-sm";
+
+        const cardBody = document.createElement("div");
+        cardBody.className = "card-body d-flex flex-column justify-content-between";
+
+        // Contenido superior de la tarjeta
+        const topDiv = document.createElement("div");
+        
+        const badgeCat = document.createElement("span");
+        badgeCat.className = "badge text-bg-info mb-2 me-2";
+        badgeCat.textContent = p.categoria;
+
+        const badgeEstado = document.createElement("span");
+        badgeEstado.className = p.activo && p.stock > 0 ? "badge text-bg-success mb-2" : "badge text-bg-danger mb-2";
+        badgeEstado.textContent = p.activo && p.stock > 0 ? "En Stock" : "Agotado";
+
+        const titulo = document.createElement("h5");
+        titulo.className = "card-title text-white";
+        titulo.textContent = p.nombre;
+
+        const codigo = document.createElement("p");
+        codigo.className = "card-subtitle text-secondary small mb-3";
+        codigo.textContent = "SKU: " + p.codigo;
+
+        const precio = document.createElement("p");
+        precio.className = "fs-4 fw-bold text-success mb-1";
+        precio.textContent = formatoPrecio(p.precio);
+
+        const stock = document.createElement("p");
+        stock.className = "small text-secondary mb-3";
+        stock.textContent = "Unidades disponibles: " + p.stock;
+
+        topDiv.appendChild(badgeCat);
+        topDiv.appendChild(badgeEstado);
+        topDiv.appendChild(titulo);
+        topDiv.appendChild(codigo);
+        topDiv.appendChild(precio);
+        topDiv.appendChild(stock);
+
+        // Botones de acción
+        const botDiv = document.createElement("div");
+        botDiv.className = "d-flex gap-2";
+
+        const btnComprar = document.createElement("button");
+        btnComprar.className = "btn btn-outline-success btn-sm w-100";
+        btnComprar.textContent = "Añadir al Carrito";
+        btnComprar.disabled = !p.activo || p.stock === 0;
+
+        botDiv.appendChild(btnComprar);
+
+        // Si es Admin, mostramos botones de Editar y Eliminar
+        if (esAdmin) {
+          const btnEdit = document.createElement("button");
+          btnEdit.className = "btn btn-warning btn-sm";
+          btnEdit.textContent = "✏️";
+          btnEdit.addEventListener("click", function () { abrirFormulario(p.id); });
+
+          const btnDel = document.createElement("button");
+          btnDel.className = "btn btn-danger btn-sm";
+          btnDel.textContent = "🗑️";
+          btnDel.addEventListener("click", function () { eliminar(p.id); });
+
+          botDiv.appendChild(btnEdit);
+          botDiv.appendChild(btnDel);
+        }
+
+        cardBody.appendChild(topDiv);
+        cardBody.appendChild(botDiv);
+        card.appendChild(cardBody);
+        col.appendChild(card);
+
+        contenedor.appendChild(col);
+      });
+    }
+
+    function formatoPrecio(valor) {
+      return new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP" }).format(valor);
+    }
+
+    function llenarCategorias() {
+      const categorias = productos.map(p => p.categoria)
+        .filter((c, i, arr) => arr.indexOf(c) === i)
+        .sort();
+
+      const select = document.getElementById("filtroCategoria");
+      select.length = 1;
+      categorias.forEach(function (c) {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c;
+        select.appendChild(opt);
+      });
+    }
+
+    document.getElementById("buscador").addEventListener("input", pintarGaleria);
+    document.getElementById("filtroCategoria").addEventListener("change", pintarGaleria);
+
+    /* MANTENEDOR (SOLO ADMIN) */
+    document.getElementById("btnNuevo").addEventListener("click", function () { abrirFormulario(null); });
+    document.getElementById("btnCancelar").addEventListener("click", cerrarFormulario);
+    document.getElementById("btnGuardar").addEventListener("click", guardar);
+
+    function abrirFormulario(id) {
+      if (!esAdmin) return;
+      const p = id ? productos.find(x => x.id === id) : null;
+
+      document.getElementById("errorForm").classList.add("d-none");
+      document.getElementById("tituloForm").textContent = id ? "Editar Juego" : "Nuevo Juego";
+
+      document.getElementById("prodId").value = p ? p.id : "";
+      document.getElementById("prodCodigo").value = p ? p.codigo : "";
+      document.getElementById("prodNombre").value = p ? p.nombre : "";
+      document.getElementById("prodCategoria").value = p ? p.categoria : "";
+      document.getElementById("prodPrecio").value = p ? p.precio : "";
+      document.getElementById("prodStock").value = p ? p.stock : "";
+      document.getElementById("prodActivo").checked = p ? p.activo : true;
+
+      document.getElementById("panelForm").classList.remove("d-none");
+    }
+
+    function cerrarFormulario() {
+      document.getElementById("panelForm").classList.add("d-none");
+    }
+
+    function guardar() {
+      if (!esAdmin) return;
+      const idTexto = document.getElementById("prodId").value;
+      const id = idTexto ? Number(idTexto) : null;
+
+      const datos = {
+        codigo: document.getElementById("prodCodigo").value.trim(),
+        nombre: document.getElementById("prodNombre").value.trim(),
+        categoria: document.getElementById("prodCategoria").value.trim(),
+        precio: Number(document.getElementById("prodPrecio").value),
+        stock: Number(document.getElementById("prodStock").value),
+        activo: document.getElementById("prodActivo").checked
+      };
+
+      if (!datos.codigo || !datos.nombre || !datos.categoria || isNaN(datos.precio) || isNaN(datos.stock)) {
+        const caja = document.getElementById("errorForm");
+        caja.textContent = "Por favor completa todos los campos correctamente.";
+        caja.classList.remove("d-none");
+        return;
+      }
+
+      if (id) {
+        const i = productos.findIndex(x => x.id === id);
+        productos[i] = Object.assign({}, productos[i], datos);
+      } else {
+        const nuevoId = productos.length ? Math.max.apply(null, productos.map(x => x.id)) + 1 : 1;
+        productos.push(Object.assign({ id: nuevoId }, datos));
+      }
+
+      guardarProductos();
+      llenarCategorias();
+      pintarGaleria();
+      cerrarFormulario();
+    }
+
+    function eliminar(id) {
+      if (!esAdmin) return;
+      const p = productos.find(x => x.id === id);
+      if (!p) return;
+
+      if (confirm("¿Estás seguro de eliminar el juego " + p.nombre + "?")) {
+        productos = productos.filter(x => x.id !== id);
+        guardarProductos();
+        llenarCategorias();
+        pintarGaleria();
+      }
+    }
+  </script>
 </body>
 </html>
