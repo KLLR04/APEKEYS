@@ -26,8 +26,8 @@
       </div>
 
       <div class="header-actions">
-          <a href="login.html"><img src="img/User.png" alt="Cuenta"></a>
-          <a href="carrito.html"><img src="img/Cart.png" alt="Carrito"></a>
+          <a href="login.html"><img src="img/Cart y User/user.png" alt="Cuenta"></a>
+          <a href="carrito.html"><img src="img/Cart y User/cart.png" alt="Carrito"></a>
       </div>
 
   </div>
@@ -45,29 +45,43 @@
           Categorías
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Terror</a></li>
-          <li><a class="dropdown-item" href="#">Ficción</a></li>
+          <li><a class="dropdown-item" href="#">Battle Royale</a></li>
+          <li><a class="dropdown-item" href="#">Carreras</a></li>
+          <li><a class="dropdown-item" href="#">Deportes</a></li>
           <li><a class="dropdown-item" href="#">Multijugador</a></li>
+          <li><a class="dropdown-item" href="#">Mundo Abierto</a></li>
+          <li><a class="dropdown-item" href="#">Rol</a></li>
           <li><a class="dropdown-item" href="#">Plataformas</a></li>
-          <li><a class="dropdown-item" href="#">RPG</a></li>
+          <li><a class="dropdown-item" href="#">Terror</a></li>
         </ul>
       </div>
     </div>
   </nav>
+</header>
 
-  <!-- Carrusel de imágenes adaptado a Bootstrap -->
-  <div id="carouselExample" class="carousel slide carrusel-pequeno mx-auto">
+<main>
+    <!-- Carrusel de imágenes adaptado a Bootstrap -->
+  <div id="carouselExample" class="carousel slide carrusel-pequeno mx-auto" data-bs-ride="carousel">
+    <!-- Indicadores añadidos: Vitales para la navegación espacial del usuario -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="img/carrousel_1.png" class="d-block w-100" alt="Carro_1">
+      <div class="carousel-item active" data-bs-interval="4000">
+        
+        <img src="img/Carrusel index/carrousel_1.png" class="d-block w-100" alt="Descripción de la imagen 1">
       </div>
-      <div class="carousel-item">
-        <img src="img/carrousel_2.png" class="d-block w-100" alt="...">
+      <div class="carousel-item" data-bs-interval="4000">
+        <img src="img/Carrusel index/carrousel_2.png" class="d-block w-100" alt="Descripción de la imagen 2">
       </div>
-      <div class="carousel-item">
-        <img src="img/carrousel_3.png" class="d-block w-100" alt="...">
+      <div class="carousel-item" data-bs-interval="4000">
+        <img src="img/Carrusel index/carrousel_3.png" class="d-block w-100" alt="Descripción de la imagen 3">
       </div>
     </div>
+
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
@@ -77,12 +91,38 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-</header>
 
-<!-- Se incluyen los juegos de la tienda con JavaScript, que se cargan dinámicamente en el contenedor de juegos. JONAS 13/09 -->
-<div class="Contenedor-de-juegos">
+  <!-- SEPARADOR DINÁMICO: Título de Sección -->
+  <section class="container mt-5 mb-4">
+    <div class="row align-items-center">
+        <h2 class="text-center text-uppercase text-white fw-bold mb-0">Destacados y Recomendados</h2>
+    </div>
+  </section>
 
-</div>
+  <section class="container mt-5 mb-4">
+    <div class="row align-items-center">
+        <h2 class="text-center text-uppercase text-white fw-bold mb-0">Explorar por Categorías</h2>
+    </div>
+  </section>
+
+  <section class="container mt-5 mb-4">
+    <div class="row align-items-center">
+        <h2 class="text-center text-uppercase text-white fw-bold mb-0">Los más Vendidos</h2>
+    </div>
+  </section>
+
+  <section class="container mt-5 mb-4">
+    <div class="row align-items-center">
+        <h2 class="text-center text-uppercase text-white fw-bold mb-0">Ofertas</h2>
+    </div>
+  </section>
+
+  <!-- Se incluyen los juegos de la tienda con JavaScript -->
+  <div class="Contenedor-de-juegos container mb-5">
+    <!-- El JS inyectará las cards aquí -->
+  </div>
+</main>
+
 
 <!-- El footer debe estar dentro del body, no fuera de él. He corregido la posición del footer para que esté dentro del body y se muestre correctamente en la página. JONAS 05/09-->
 <footer>
