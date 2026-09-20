@@ -1,7 +1,25 @@
 (function () {
   "use strict";
-  const KEYS = { products:"apekeys_products_v1", users:"apekeys_users_v1", session:"apekeys_session_v1", cart:"apekeys_cart_v1", messages:"apekeys_messages_v1" };
+  const KEYS = { products:"apekeys_products_v2", users:"apekeys_users_v1", session:"apekeys_session_v1", cart:"apekeys_cart_v1", messages:"apekeys_messages_v1" };
   const images = ["img/Carrusel index/carrousel_1.png","img/Carrusel index/carrousel_2.png","img/Carrusel index/carrousel_3.png"];
+  const productImages = [
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/990080/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/275850/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1944430/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/504230/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426210/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/945360/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2195250/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1551360/header.jpg",
+    "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172470/header.jpg",
+    "https://images.unsplash.com/photo-1605901309584-818e25960a8f?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=900&q=80"
+  ];
   const productsSeed = [
     [1,"GAM-001","Red Dead Redemption 2","Mundo Abierto","Steam",29990,45,"Una aventura épica de forajidos en el corazón de Estados Unidos."],
     [2,"GAM-002","Hogwarts Legacy","Mundo Abierto","Steam",49990,12,"Explora el mundo mágico del siglo XIX y define tu propio legado."],
@@ -19,7 +37,7 @@
     [14,"GAM-014","Apex Legends Coins","Battle Royale","PC",12990,90,"Saldo digital para personalizar tu experiencia en Apex Legends."],
     [15,"SOF-015","Game Pass PC 3 meses","Software","PC",23990,35,"Acceso digital por tres meses a un amplio catálogo de juegos."],
     [16,"SOF-016","Windows 11 Home","Software","PC",89990,18,"Licencia digital para un equipo, entrega inmediata por correo."]
-  ].map(function (p, i) { return { id:p[0], codigo:p[1], nombre:p[2], categoria:p[3], plataforma:p[4], precio:p[5], stock:p[6], descripcion:p[7], imagen:images[i % images.length], activo:true, stockCritico:5 }; });
+  ].map(function (p, i) { return { id:p[0], codigo:p[1], nombre:p[2], categoria:p[3], plataforma:p[4], precio:p[5], stock:p[6], descripcion:p[7], imagen:productImages[i], activo:true, stockCritico:5 }; });
   const usersSeed = [
     { id:1, run:"19011022K", nombre:"Ana", apellidos:"Muñoz", email:"admin@duoc.cl", password:"Admin123", rol:"admin", region:"Metropolitana", comuna:"Santiago", direccion:"Casa matriz APEKEYS", activo:true },
     { id:2, run:"211234567", nombre:"Camila", apellidos:"Rojas", email:"cliente@gmail.com", password:"Cliente123", rol:"cliente", region:"Valparaíso", comuna:"Viña del Mar", direccion:"Dirección de prueba", activo:true },

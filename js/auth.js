@@ -5,7 +5,7 @@
   function show(form,message){const box=form.querySelector("[data-form-message]");box.textContent=message;box.className="alert alert-error";}
   document.addEventListener("DOMContentLoaded",function(){
     const form=document.getElementById("loginForm");if(!form)return;
-    if(store.session()){location.replace("productos.html");return;}
+    if(store.session()){location.replace(store.session().rol==="admin"?"admin.html":"productos.html");return;}
     form.addEventListener("submit",function(event){
       event.preventDefault();
       const email=form.email.value.trim().toLowerCase(),password=form.password.value;
@@ -15,7 +15,7 @@
       if(!user){show(form,"Correo o contraseña incorrectos.");return;}
       if(!user.activo){show(form,"Esta cuenta está desactivada.");return;}
       store.saveSession({id:user.id,nombre:user.nombre,email:user.email,rol:user.rol});
-      location.href="productos.html";
+      location.href=user.rol==="admin"?"admin.html":"productos.html";
     });
   });
 })();

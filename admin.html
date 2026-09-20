@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Administración | APEKEYS</title>
+  <link rel="icon" href="img/logo.png"><link rel="stylesheet" href="css/styles.css">
+  <script defer src="js/data.js"></script><script defer src="js/app.js"></script><script defer src="js/admin.js"></script>
+</head>
+<body data-page="admin" data-require-role="admin">
+  <div data-site-header></div>
+  <main class="page-main"><div class="container">
+    <div class="section-head"><div><span class="eyebrow">Administración</span><h1>Panel de control</h1><p>Bienvenido, <strong data-admin-name>usuario</strong>.</p></div><button class="btn btn-secondary" type="button" data-logout>Cerrar sesión</button></div>
+    <div class="admin-shell">
+      <aside class="card admin-nav" aria-label="Menú administrativo"><strong>Opciones</strong><a class="active" href="admin.html">Resumen</a><a href="productos.html">Administrar inventario</a><a href="index.html">Ver tienda</a></aside>
+      <section>
+        <div class="grid kpi-grid">
+          <article class="card kpi"><span>Productos registrados</span><strong data-total-products>0</strong></article>
+          <article class="card kpi"><span>Productos activos</span><strong data-active-products>0</strong></article>
+          <article class="card kpi"><span>Stock bajo</span><strong data-low-stock>0</strong></article>
+        </div>
+        <section class="section"><div class="section-head"><div><h2>Inventario</h2><p>Resumen de productos con poco stock.</p></div><a class="btn btn-primary" href="productos.html">Ir al inventario</a></div><div class="card table-card"><table><thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Stock</th><th>Estado</th></tr></thead><tbody data-admin-products></tbody></table></div></section>
+      </section>
+    </div>
+  </div></main>
+  <footer data-site-footer></footer>
+</body>
+</html>

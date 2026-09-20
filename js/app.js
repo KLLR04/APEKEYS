@@ -6,10 +6,11 @@
   function renderHeader(){
     const target=document.querySelector("[data-site-header]"); if(!target)return;
     const session=store.session(), file=currentFile(), links=[["index.html","Inicio"],["productos.html","Productos"],["categorias.html","Categorías"],["software.html","Software"]];
+    if(session&&session.rol==="admin")links.push(["admin.html","Administración"]);
     const header=document.createElement("header");header.className="site-header";const bar=document.createElement("div");bar.className="container topbar";bar.innerHTML='<a class="brand" href="index.html"><img src="img/logo.png" alt="Logo APEKEYS"><span>APEKEYS</span></a>';
     const nav=document.createElement("nav");nav.className="nav-links";nav.id="mainNav";nav.setAttribute("aria-label","Navegación principal");links.forEach(function(item){const a=document.createElement("a");a.href=item[0];a.textContent=item[1];if(file===item[0])a.setAttribute("aria-current","page");nav.appendChild(a);});
     const actions=document.createElement("div");actions.className="header-actions";const cart=document.createElement("a");cart.className="btn btn-secondary btn-sm cart-link";cart.href="carrito.html";cart.innerHTML='Carrito <span class="cart-count" data-cart-count>0</span>';actions.appendChild(cart);
-    const account=document.createElement("a");account.className="btn btn-primary btn-sm";account.href=session?"productos.html":"login.html";const label=document.createElement("span");label.className="account-label";label.textContent=session?session.nombre:"Ingresar";account.append(label);actions.appendChild(account);
+    const account=document.createElement("a");account.className="btn btn-primary btn-sm";account.href=session&&session.rol==="admin"?"admin.html":session?"productos.html":"login.html";const label=document.createElement("span");label.className="account-label";label.textContent=session?session.nombre:"Ingresar";account.append(label);actions.appendChild(account);
     const toggle=document.createElement("button");toggle.type="button";toggle.className="menu-toggle";toggle.textContent="Menú";toggle.setAttribute("aria-controls","mainNav");toggle.setAttribute("aria-expanded","false");toggle.addEventListener("click",function(){const open=nav.classList.toggle("open");toggle.setAttribute("aria-expanded",String(open));});
     bar.append(nav,actions,toggle);header.appendChild(bar);target.replaceWith(header);
   }
