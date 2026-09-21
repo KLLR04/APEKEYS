@@ -10,7 +10,7 @@
   function mostrarMensaje(form, texto, tipo) {
     var caja = form.querySelector("[data-form-message]");
     caja.textContent = texto;
-    caja.className = "alert alert-" + (tipo || "error");
+    caja.className = "alert alert-" + (tipo || "danger");
   }
 
   function limpiarMensaje(form) {
