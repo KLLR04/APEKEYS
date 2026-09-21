@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Crear cuenta | APEKEYS</title>
+    <meta
+      name="description"
+      content="Crea tu cuenta de cliente en APEKEYS para comprar claves digitales."
+    />
+    <link rel="icon" href="img/logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="js/data.js"></script>
+    <script defer src="js/validaciones.js"></script>
+    <script defer src="js/app.js"></script>
+    <script defer src="js/auth.js"></script>
+  </head>
+  <body data-page="registro">
+    <div data-site-header></div>
+
+    <main class="page-main">
+      <div class="container narrow">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Únete a APEKEYS</span>
+            <h1>Crear cuenta</h1>
+            <p>Completa tus datos para comprar y recibir tus claves digitales.</p>
+          </div>
+        </div>
+
+        <section class="card form-card">
+          <form id="registroForm" novalidate>
+            <div class="alert hidden" data-form-message role="alert"></div>
+
+            <fieldset class="form-fieldset">
+              <legend>Datos personales</legend>
+              <div class="form-grid">
+                <label class="field" for="regRun"
+                  >RUN
+                  <input
+                    class="form-control"
+                    id="regRun"
+                    type="text"
+                    name="run"
+                    maxlength="9"
+                    placeholder="15675613K"
+                    required
+                  />
+                  <span class="field-hint muted">Sin puntos ni guion. Ejemplo: 15675613K</span>
+                  <span class="field-error"></span>
+                </label>
+
+                <!-- type="text" a propósito: así no aparece el calendario del
+                   navegador y la fecha se escribe a mano. -->
+                <label class="field" for="regFecha"
+                  >Fecha de nacimiento
+                  <input
+                    class="form-control"
+                    id="regFecha"
+                    type="text"
+                    name="fechaNacimiento"
+                    maxlength="10"
+                    inputmode="numeric"
+                    placeholder="DD/MM/AAAA"
+                  />
+                  <span class="field-hint muted">Escríbela en formato DD/MM/AAAA.</span>
+                  <span class="field-error"></span>
+                </label>
+
+                <label class="field" for="regNombre"
+                  >Nombre
+                  <input
+                    class="form-control"
+                    id="regNombre"
+                    type="text"
+                    name="nombre"
+                    maxlength="50"
+                    autocomplete="given-name"
+                    required
+                  />
+                  <span class="field-error"></span>
+                </label>
+
+                <label class="field" for="regApellidos"
+                  >Apellidos
+                  <input
+                    class="form-control"
+                    id="regApellidos"
+                    type="text"
+                    name="apellidos"
+                    maxlength="100"
+                    autocomplete="family-name"
+                    required
+                  />
+                  <span class="field-error"></span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-fieldset">
+              <legend>Datos de acceso</legend>
+              <div class="form-grid">
+                <label class="field span-2" for="regEmail"
+                  >Correo electrónico
+                  <input
+                    class="form-control"
+                    id="regEmail"
+                    type="email"
+                    name="email"
+                    maxlength="100"
+                    autocomplete="email"
+                    placeholder="nombre@correo.com"
+                    required
+                  />
+                  <span class="field-error"></span>
+                </label>
+
+                <label class="field" for="regPassword"
+                  >Contraseña
+                  <input
+                    class="form-control"
+                    id="regPassword"
+                    type="password"
+                    name="password"
+                    minlength="4"
+                    maxlength="10"
+                    autocomplete="new-password"
+                    required
+                  />
+                  <span class="field-hint muted">Entre 4 y 10 caracteres.</span>
+                  <span class="field-error"></span>
+                </label>
+
+                <label class="field" for="regPassword2"
+                  >Repetir contraseña
+                  <input
+                    class="form-control"
+                    id="regPassword2"
+                    type="password"
+                    name="password2"
+                    minlength="4"
+                    maxlength="10"
+                    autocomplete="new-password"
+                    required
+                  />
+                  <span class="field-error"></span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="form-grid mb-3">
+              <label class="field" for="regRegion"
+                >Región<select class="form-select" id="regRegion" name="region" required></select
+                ><span class="field-error"></span></label
+              ><label class="field" for="regComuna"
+                >Comuna<select class="form-select" id="regComuna" name="comuna" required></select
+                ><span class="field-error"></span></label
+              ><label class="field span-2" for="regDireccion"
+                >Dirección<input
+                  class="form-control"
+                  id="regDireccion"
+                  name="direccion"
+                  maxlength="300"
+                  required /><span class="field-error"></span
+              ></label>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Crear cuenta</button>
+              <a class="btn btn-secondary" href="login.html">Ya tengo cuenta</a>
+            </div>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <footer data-site-footer></footer>
+  </body>
+</html>

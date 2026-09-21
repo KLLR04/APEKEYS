@@ -3,31 +3,319 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Administración | APEKEYS</title>
+    <title>Panel de control | APEKEYS</title>
+    <meta name="description" content="Panel de administración de APEKEYS." />
     <link rel="icon" href="img/logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="css/styles.css" />
     <script defer src="js/data.js"></script>
+    <script defer src="js/validaciones.js"></script>
     <script defer src="js/app.js"></script>
     <script defer src="js/admin.js"></script>
+    <script defer src="js/admin-productos.js"></script>
   </head>
-  <body data-page="admin" data-require-role="admin">
+  <!-- Solo administrador y vendedor pueden entrar; el vendedor ve todo en modo consulta -->
+  <body data-page="admin" data-require-role="admin,vendedor">
     <div data-site-header></div>
+
     <main class="page-main">
       <div class="container">
         <div class="section-head">
           <div>
             <span class="eyebrow">Administración</span>
             <h1>Panel de control</h1>
-            <p>Bienvenido, <strong data-admin-name>usuario</strong>.</p>
+            <p>
+              Bienvenido, <strong data-admin-name>usuario</strong> · <span data-admin-role></span>
+            </p>
           </div>
           <button class="btn btn-secondary" type="button" data-logout>Cerrar sesión</button>
         </div>
+
         <div class="admin-shell">
           <aside class="card admin-nav" aria-label="Menú administrativo">
-            <strong>Opciones</strong><a class="active" href="admin.html">Resumen</a
-            ><a href="productos.html">Administrar inventario</a><a href="index.html">Ver tienda</a>
+            <strong>Opciones</strong>
+            <a class="active" href="admin.html">Resumen</a>
+            <a href="admin.html#inventario" data-only-admin>Mantenedor de productos</a>
+            <a href="admin-usuarios.html" data-only-admin>Mantenedor de usuarios</a>
+            <a href="index.html">Ver tienda</a>
           </aside>
+
           <section>
+            <div id="inventario" data-only-admin class="mb-4">
+              <button class="btn btn-primary mb-3" data-new-product>Nuevo producto</button>
+              <!-- ====== Formulario de creación / edición ====== -->
+              <section
+                class="card form-card hidden"
+                id="productPanel"
+                aria-labelledby="productFormTitle"
+              >
+                <h2 id="productFormTitle" data-form-title>Nuevo producto</h2>
+                <form id="productForm" novalidate>
+                  <div class="alert hidden" data-form-message role="alert"></div>
+                  <input type="hidden" name="productId" />
+
+                  <div class="form-grid">
+                    <label class="field" for="prodCodigo"
+                      >Código
+                      <input
+                        class="form-control"
+                        id="prodCodigo"
+                        type="text"
+                        name="codigo"
+                        maxlength="30"
+                        required
+                      />
+                      <span class="field-hint muted"
+                        >Mínimo 3 caracteres. Solo letras, números y guiones.</span
+                      >
+                      <span class="field-error"></span>
+                    </label>
+
+                    <label class="field" for="prodNombre"
+                      >Nombre
+                      <input
+                        class="form-control"
+                        id="prodNombre"
+                        type="text"
+                        name="nombre"
+                        maxlength="100"
+                        required
+                      />
+                      <span class="field-error"></span>
+                    </label>
+
+                    <label class="field" for="prodCategoria"
+                      >Categoría
+                      <select class="form-select" id="prodCategoria" name="categoria" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option>Acción</option>
+                        <option>Battle Royale</option>
+                        <option>Carreras</option>
+                        <option>Deportes</option>
+                        <option>Multijugador</option>
+                        <option>Mundo Abierto</option>
+                        <option>Plataformas</option>
+                        <option>Rol</option>
+                        <option>Software</option>
+                        <option>Terror</option>
+                      </select>
+                      <span class="field-error"></span>
+                    </label>
+
+                    <label class="field" for="prodPlataforma"
+                      >Plataforma de la clave
+                      <select class="form-select" id="prodPlataforma" name="plataforma" required>
+                        <option value="">Selecciona una plataforma</option>
+                        <option>PC</option>
+                        <option>Steam</option>
+                        <option>PlayStation</option>
+                        <option>Xbox</option>
+                      </select>
+                      <span class="field-error"></span>
+                    </label>
+
+                    <label class="field" for="prodPrecio"
+                      >Precio (CLP)
+                      <input
+                        class="form-control"
+                        id="prodPrecio"
+                        type="number"
+                        name="precio"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="Ej: 19990"
+                        required
+                      />
+                      <span class="field-hint muted">Obligatorio y mayor a cero.</span>
+                      <span class="field-error"></span>
+                    </label>
+
+                    <label class="field" for="prodStock"
+                      >Stock
+                      <input
+                        class="form-control"
+                        id="prodStock"
+                        type="number"
+                        name="stock"
+                        min="0"
+                        step="1"
+                        placeholder="Ej: 25"
+                        required
+                      />
+                      <span class="field-error"></span>
+                    </label>
+
+                    <label class="field" for="prodStockCritico"
+                      >Stock crítico
+                      <input
+                        class="form-control"
+                        id="prodStockCritico"
+                        type="number"
+                        name="stockCritico"
+                        min="0"
+                        step="1"
+                        placeholder="Ej: 5"
+                      />
+                      <span class="field-hint muted"
+                        >Nivel en que el panel muestra alerta de inventario.</span
+                      >
+                      <span class="field-error"></span>
+                    </label>
+
+                    <label
+                      class="field"
+                      style="display:flex;align-items:center;gap:10px;align-self:end"
+                    >
+                      <input type="checkbox" name="activo" checked /> Producto activo en la tienda
+                    </label>
+
+                    <label class="field span-2" for="prodDescripcion"
+                      >Descripción
+                      <textarea
+                        class="form-control"
+                        id="prodDescripcion"
+                        name="descripcion"
+                        maxlength="500"
+                      ></textarea>
+                      <span class="field-hint muted">Opcional. Máximo 500 caracteres.</span>
+                      <span class="field-error"></span>
+                    </label>
+
+                    <!-- ====== Imagen: por URL o subiendo un archivo ====== -->
+                    <fieldset class="field span-2 image-field">
+                      <legend>Imagen del producto</legend>
+
+                      <div class="radio-row">
+                        <label
+                          ><input type="radio" name="origenImagen" value="url" checked /> Usar una
+                          URL de internet</label
+                        >
+                        <label
+                          ><input type="radio" name="origenImagen" value="archivo" /> Subir un
+                          archivo de mi equipo</label
+                        >
+                      </div>
+
+                      <div class="image-layout">
+                        <div class="image-inputs">
+                          <div data-bloque-url>
+                            <label class="field" for="prodImagenUrl"
+                              >Dirección de la imagen
+                              <input
+                                class="form-control"
+                                id="prodImagenUrl"
+                                type="url"
+                                name="imagenUrl"
+                                maxlength="500"
+                                placeholder="https://..."
+                              />
+                              <span class="field-error"></span>
+                            </label>
+                          </div>
+
+                          <div class="hidden" data-bloque-archivo>
+                            <label class="field" for="prodImagenArchivo"
+                              >Archivo de imagen
+                              <input
+                                class="form-control"
+                                id="prodImagenArchivo"
+                                type="file"
+                                name="imagenArchivo"
+                                accept="image/png,image/jpeg,image/webp,image/gif"
+                              />
+                              <span class="field-hint muted"
+                                >PNG, JPG, WEBP o GIF. Máximo 400 KB.</span
+                              >
+                              <span class="field-error" data-file-error></span>
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="image-preview card">
+                          <img
+                            class="hidden"
+                            data-image-preview
+                            alt="Vista previa de la imagen del producto"
+                          />
+                          <span class="muted" data-image-empty>Sin imagen seleccionada</span>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+
+                  <div class="form-actions">
+                    <button class="btn btn-primary" type="submit">Guardar producto</button>
+                    <button class="btn btn-secondary" type="button" data-cancel-product>
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              <!-- ====== Listado del inventario ====== -->
+              <section class="section">
+                <div class="section-head">
+                  <div>
+                    <h2>Listado de productos registrados</h2>
+                    <p data-admin-count class="muted"></p>
+                  </div>
+                </div>
+
+                <div class="card toolbar toolbar-admin">
+                  <label class="field" for="adminSearch"
+                    >Buscar
+                    <input
+                      class="form-control"
+                      id="adminSearch"
+                      type="search"
+                      maxlength="60"
+                      placeholder="Código, nombre, categoría o plataforma"
+                    />
+                  </label>
+                  <label class="field" for="adminEstado"
+                    >Estado
+                    <select class="form-select" id="adminEstado">
+                      <option value="">Todos</option>
+                      <option value="activo">Solo activos</option>
+                      <option value="inactivo">Solo inactivos</option>
+                      <option value="critico">Con stock crítico</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="card table-responsive" data-product-table>
+                  <table class="table table-hover align-middle mb-0">
+                    <caption class="visually-hidden">
+                      Inventario de productos
+                    </caption>
+                    <thead class="table-light">
+                      <tr>
+                        <th scope="col">Código</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Activo</th>
+                        <th scope="col" style="text-align:right">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
             <div class="grid kpi-grid">
               <article class="card kpi">
                 <span>Productos registrados</span><strong data-total-products>0</strong>
@@ -36,29 +324,72 @@
                 <span>Productos activos</span><strong data-active-products>0</strong>
               </article>
               <article class="card kpi">
-                <span>Stock bajo</span><strong data-low-stock>0</strong>
+                <span>Stock crítico</span><strong data-low-stock>0</strong>
+              </article>
+              <article class="card kpi" data-only-admin>
+                <span>Usuarios registrados</span><strong data-total-users>0</strong>
+              </article>
+              <article class="card kpi">
+                <span>Compras realizadas</span><strong data-total-orders>0</strong>
+              </article>
+              <article class="card kpi">
+                <span>Total vendido</span><strong data-total-sales>$0</strong>
               </article>
             </div>
+
             <section class="section">
               <div class="section-head">
                 <div>
-                  <h2>Inventario</h2>
-                  <p>Resumen de productos con poco stock.</p>
+                  <h2>Alertas de inventario</h2>
+                  <p>Productos que llegaron a su stock crítico o se quedaron sin unidades.</p>
                 </div>
-                <a class="btn btn-primary" href="productos.html">Ir al inventario</a>
+                <a class="btn btn-primary" href="admin.html#inventario" data-only-admin
+                  >Ir al mantenedor</a
+                >
               </div>
-              <div class="card table-card">
-                <table>
-                  <thead>
+              <div class="card table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <caption class="visually-hidden">
+                    Productos con stock bajo
+                  </caption>
+                  <thead class="table-light">
                     <tr>
-                      <th>Código</th>
-                      <th>Producto</th>
-                      <th>Categoría</th>
-                      <th>Stock</th>
-                      <th>Estado</th>
+                      <th scope="col">Código</th>
+                      <th scope="col">Producto</th>
+                      <th scope="col">Categoría</th>
+                      <th scope="col">Stock</th>
+                      <th scope="col">Stock crítico</th>
+                      <th scope="col">Estado</th>
                     </tr>
                   </thead>
                   <tbody data-admin-products></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="section-head">
+                <div>
+                  <h2>Últimas compras</h2>
+                  <p>Cada compra descuenta automáticamente el stock del inventario.</p>
+                </div>
+              </div>
+              <div class="card table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <caption class="visually-hidden">
+                    Últimas órdenes registradas
+                  </caption>
+                  <thead class="table-light">
+                    <tr>
+                      <th scope="col">Orden</th>
+                      <th scope="col">Fecha</th>
+                      <th scope="col">Cliente</th>
+                      <th scope="col">Productos</th>
+                      <th scope="col">Unidades</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody data-admin-orders></tbody>
                 </table>
               </div>
             </section>
@@ -66,6 +397,7 @@
         </div>
       </div>
     </main>
+
     <footer data-site-footer></footer>
   </body>
 </html>

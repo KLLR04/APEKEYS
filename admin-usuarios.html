@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mantenedor de usuarios | APEKEYS</title>
+    <meta
+      name="description"
+      content="Mantenedor de usuarios de APEKEYS: crear, editar, activar y eliminar cuentas."
+    />
+    <link rel="icon" href="img/logo.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="js/data.js"></script>
+    <script defer src="js/validaciones.js"></script>
+    <script defer src="js/app.js"></script>
+    <script defer src="js/auth.js"></script>
+    <script defer src="js/admin-usuarios.js"></script>
+  </head>
+  <body data-page="admin-users" data-require-role="admin">
+    <div data-site-header></div>
+
+    <main class="page-main">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Administración</span>
+            <h1>Mantenedor de usuarios</h1>
+            <p>Gestiona las cuentas de administradores, vendedores y clientes.</p>
+          </div>
+          <div class="admin-actions">
+            <button class="btn btn-primary" type="button" data-new-user>Nuevo usuario</button>
+            <button class="btn btn-secondary" type="button" data-logout>Cerrar sesión</button>
+          </div>
+        </div>
+
+        <div class="admin-shell">
+          <aside class="card admin-nav" aria-label="Menú administrativo">
+            <strong>Opciones</strong>
+            <a href="admin.html">Resumen</a>
+            <a href="admin.html#inventario">Mantenedor de productos</a>
+            <a class="active" href="admin-usuarios.html">Mantenedor de usuarios</a>
+            <a href="index.html">Ver tienda</a>
+          </aside>
+
+          <section>
+            <section class="card form-card hidden" id="userPanel" aria-labelledby="userFormTitle">
+              <h2 id="userFormTitle" data-user-form-title>Nuevo usuario</h2>
+              <form id="userForm" novalidate>
+                <div class="alert hidden" data-form-message role="alert"></div>
+                <input type="hidden" name="userId" />
+
+                <div class="form-grid">
+                  <label class="field" for="usrRun"
+                    >RUN
+                    <input
+                      class="form-control"
+                      id="usrRun"
+                      type="text"
+                      name="run"
+                      maxlength="9"
+                      placeholder="15675613K"
+                      required
+                    />
+                    <span class="field-hint muted"
+                      >Sin puntos ni guion, entre 7 y 9 caracteres.</span
+                    >
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label class="field" for="usrRol"
+                    >Tipo de usuario
+                    <select class="form-select" id="usrRol" name="rol" required>
+                      <option value="cliente">Cliente</option>
+                      <option value="vendedor">Vendedor</option>
+                      <option value="admin">Administrador</option>
+                    </select>
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label class="field" for="usrNombre"
+                    >Nombre
+                    <input
+                      class="form-control"
+                      id="usrNombre"
+                      type="text"
+                      name="nombre"
+                      maxlength="50"
+                      required
+                    />
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label class="field" for="usrApellidos"
+                    >Apellidos
+                    <input
+                      class="form-control"
+                      id="usrApellidos"
+                      type="text"
+                      name="apellidos"
+                      maxlength="100"
+                      required
+                    />
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label class="field" for="usrEmail"
+                    >Correo electrónico
+                    <input
+                      class="form-control"
+                      id="usrEmail"
+                      type="email"
+                      name="email"
+                      maxlength="100"
+                      required
+                    />
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label class="field" for="usrPassword"
+                    >Contraseña
+                    <input
+                      class="form-control"
+                      id="usrPassword"
+                      type="password"
+                      name="password"
+                      maxlength="10"
+                      autocomplete="new-password"
+                    />
+                    <span class="field-hint muted" data-password-hint
+                      >Entre 4 y 10 caracteres.</span
+                    >
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label class="field" for="usrFecha"
+                    >Fecha de nacimiento <span class="muted">(opcional)</span>
+                    <input class="form-control" id="usrFecha" type="date" name="fechaNacimiento" />
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label
+                    class="field"
+                    style="display:flex;align-items:center;gap:10px;align-self:end"
+                  >
+                    <input type="checkbox" name="activo" checked /> Cuenta activa
+                  </label>
+
+                  <label class="field" for="usrRegion"
+                    >Región
+                    <select class="form-select" id="usrRegion" name="region" required></select>
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label class="field" for="usrComuna"
+                    >Comuna
+                    <select
+                      class="form-select"
+                      id="usrComuna"
+                      name="comuna"
+                      required
+                      disabled
+                    ></select>
+                    <span class="field-error"></span>
+                  </label>
+
+                  <label class="field span-2" for="usrDireccion"
+                    >Dirección
+                    <input
+                      class="form-control"
+                      id="usrDireccion"
+                      type="text"
+                      name="direccion"
+                      maxlength="300"
+                      required
+                    />
+                    <span class="field-error"></span>
+                  </label>
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" type="submit">Guardar usuario</button>
+                  <button class="btn btn-secondary" type="button" data-cancel-user>Cancelar</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="section">
+              <div class="section-head">
+                <div>
+                  <h2>Listado de usuarios registrados</h2>
+                  <p class="muted" data-user-count></p>
+                </div>
+              </div>
+
+              <div class="card toolbar toolbar-admin">
+                <label class="field" for="userSearch"
+                  >Buscar
+                  <input
+                    class="form-control"
+                    id="userSearch"
+                    type="search"
+                    maxlength="60"
+                    placeholder="RUN, nombre, correo o comuna"
+                  />
+                </label>
+                <label class="field" for="userRol"
+                  >Tipo de usuario
+                  <select class="form-select" id="userRol">
+                    <option value="">Todos</option>
+                    <option value="cliente">Clientes</option>
+                    <option value="vendedor">Vendedores</option>
+                    <option value="admin">Administradores</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="card table-responsive" data-user-table>
+                <table class="table table-hover align-middle mb-0">
+                  <caption class="visually-hidden">
+                    Usuarios registrados
+                  </caption>
+                  <thead class="table-light">
+                    <tr>
+                      <th scope="col">RUN</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Correo</th>
+                      <th scope="col">Ubicación</th>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col" style="text-align:right">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer data-site-footer></footer>
+  </body>
+</html>
