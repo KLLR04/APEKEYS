@@ -14,7 +14,7 @@
     article.className = "card product-card h-100";
 
     var link = document.createElement("a");
-    link.href = "producto.html?id=" + p.id;
+    link.href = "ficha.html?id=" + p.id;
     link.className = "product-link";
     link.setAttribute("aria-label", "Ver detalle de " + p.nombre);
 
@@ -81,7 +81,7 @@
     body.appendChild(bottom);
 
     var wrapperLink = document.createElement("a");
-    wrapperLink.href = "producto.html?id=" + p.id;
+    wrapperLink.href = "ficha.html?id=" + p.id;
     wrapperLink.className = "product-title-link";
     wrapperLink.appendChild(title);
     body.insertBefore(wrapperLink, meta);
@@ -242,7 +242,7 @@
       })
       .forEach(function (name) {
         var a = document.createElement("a");
-        a.href = "productos.html?categoria=" + encodeURIComponent(name);
+        a.href = "catalogo.html?categoria=" + encodeURIComponent(name);
         a.className = "card card-body h-100";
         var strong = document.createElement("strong");
         strong.textContent = name;

@@ -1,10 +1,3 @@
-/* ===========================================================================
-   admin-productos.js  —  Mantenedor de productos (solo administrador)
-   ---------------------------------------------------------------------------
-   El CRUD vive dentro del panel de administración (admin.html#inventario),
-   no en el catálogo público. Así la tienda queda limpia y la gestión
-   queda toda bajo /admin.
-   =========================================================================== */
 (function () {
   "use strict";
 

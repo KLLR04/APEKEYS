@@ -89,7 +89,7 @@
 
         var centro = document.createElement("div");
         var titulo = document.createElement("a");
-        titulo.href = "producto.html?id=" + p.id;
+        titulo.href = "ficha.html?id=" + p.id;
         titulo.innerHTML = "<strong></strong>";
         titulo.querySelector("strong").textContent = p.nombre;
 
@@ -171,7 +171,7 @@
         vacio.innerHTML =
           "<h2>Tu carrito está vacío</h2>" +
           "<p>Explora el catálogo y agrega tu próxima aventura.</p>" +
-          '<a class="btn btn-primary" href="productos.html">Ver productos</a>';
+          '<a class="btn btn-primary" href="catalogo.html">Ver productos</a>';
         lista.appendChild(vacio);
         resumen.classList.add("hidden");
       } else {

@@ -118,7 +118,7 @@
 
       var link = document.createElement("a");
       link.className = "btn btn-secondary btn-sm";
-      link.href = "blog-detalle.html?id=" + b.id;
+      link.href = "articulo.html?id=" + b.id;
       link.textContent = "Ver caso";
 
       body.append(fecha, titulo, resumen, link);
@@ -140,7 +140,7 @@
       contenedor.innerHTML =
         '<div class="card empty-state"><h2>Artículo no encontrado</h2>' +
         "<p>Puede que el enlace esté mal escrito.</p>" +
-        '<a class="btn btn-primary" href="blogs.html">Volver al blog</a></div>';
+        '<a class="btn btn-primary" href="noticias.html">Volver al blog</a></div>';
       return;
     }
 

@@ -20,7 +20,7 @@
         session && ["admin", "vendedor"].includes(session.rol)
           ? "admin.html"
           : session
-            ? "productos.html"
+            ? "catalogo.html"
             : "login.html",
       adminLink =
         session && ["admin", "vendedor"].includes(session.rol)
@@ -32,8 +32,8 @@
       '"><img src="img/Cart y User/user.png" alt="Cuenta"></a><a class="cart-icon" href="carrito.html"><img src="img/Cart y User/cart.png" alt="Carrito"><span class="badge text-bg-danger" data-cart-count>0</span></a></div></div><nav class="navbar bg-body-tertiary"><div class="container-fluid justify-content-start"><a class="btn ' +
       (file === "index.html" ? "btn-outline-success" : "btn-outline-secondary") +
       ' me-2" href="index.html">Inicio</a><a class="btn ' +
-      (file === "productos.html" ? "btn-outline-success" : "btn-outline-secondary") +
-      ' me-2" href="productos.html">Productos</a><div class="dropdown me-2"><button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Categorías</button><ul class="dropdown-menu"><li><a class="dropdown-item" href="productos.html?categoria=Acción">Acción</a></li><li><a class="dropdown-item" href="productos.html?categoria=Mundo%20Abierto">Mundo abierto</a></li><li><a class="dropdown-item" href="productos.html?categoria=Plataformas">Plataformas</a></li><li><a class="dropdown-item" href="productos.html?categoria=Terror">Terror</a></li></ul></div>' +
+      (file === "catalogo.html" ? "btn-outline-success" : "btn-outline-secondary") +
+      ' me-2" href="catalogo.html">Productos</a><div class="dropdown me-2"><button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Categorías</button><ul class="dropdown-menu"><li><a class="dropdown-item" href="catalogo.html?categoria=Acción">Acción</a></li><li><a class="dropdown-item" href="catalogo.html?categoria=Mundo%20Abierto">Mundo abierto</a></li><li><a class="dropdown-item" href="catalogo.html?categoria=Plataformas">Plataformas</a></li><li><a class="dropdown-item" href="catalogo.html?categoria=Terror">Terror</a></li></ul></div>' +
       adminLink +
       "</div></nav></header>";
 
@@ -41,7 +41,7 @@
     nav.classList.add("gap-2");
     [
       ["software.html", "Software"],
-      ["blogs.html", "Blogs"],
+      ["noticias.html", "Blogs"],
       ["nosotros.html", "Nosotros"],
       ["contacto.html", "Contacto"],
     ].forEach(function (item) {
@@ -66,7 +66,7 @@
     const search = document.getElementById("headerSearch");
     search.addEventListener("keydown", function (event) {
       if (event.key === "Enter" && search.value.trim())
-        location.href = "productos.html?buscar=" + encodeURIComponent(search.value.trim());
+        location.href = "catalogo.html?buscar=" + encodeURIComponent(search.value.trim());
     });
   }
   function renderFooter() {
@@ -85,7 +85,7 @@
   }
   function addToCart(productId, quantity) {
     if (!store.session()) {
-      location.href = "login.html?next=productos.html";
+      location.href = "login.html?next=catalogo.html";
       return;
     }
     const p = store.products().find(function (x) {
@@ -123,7 +123,7 @@
       location.replace("login.html?next=" + encodeURIComponent(currentFile()));
       return;
     }
-    if (roles.length && !roles.includes(session.rol)) location.replace("productos.html");
+    if (roles.length && !roles.includes(session.rol)) location.replace("catalogo.html");
   }
   function confirmar(titulo, mensaje, accion) {
     if (window.confirm(titulo + "\n" + mensaje)) accion();

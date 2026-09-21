@@ -1,5 +1,5 @@
 /* ===========================================================================
-   producto.js  —  Vista de detalle de un producto (producto.html?id=N)
+   producto.js  —  Vista de detalle de un producto (ficha.html?id=N)
    =========================================================================== */
 (function () {
   "use strict";
@@ -38,7 +38,7 @@
 
     document.querySelector("[data-detail-breadcrumb]").textContent = producto.categoria;
     document.querySelector("[data-detail-breadcrumb]").href =
-      "productos.html?categoria=" + encodeURIComponent(producto.categoria);
+      "catalogo.html?categoria=" + encodeURIComponent(producto.categoria);
     document.querySelector("[data-detail-name]").textContent = producto.nombre;
     document.querySelector("[data-detail-category]").textContent = producto.categoria;
     document.querySelector("[data-detail-platform]").textContent = producto.plataforma;
@@ -95,7 +95,7 @@
     relacionados.forEach(function (p) {
       var a = document.createElement("a");
       a.className = "card related-card";
-      a.href = "producto.html?id=" + p.id;
+      a.href = "ficha.html?id=" + p.id;
 
       var img = document.createElement("img");
       img.src = p.imagen || "img/logo.png";
