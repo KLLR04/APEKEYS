@@ -187,7 +187,7 @@
       titulo: "Cómo elegir tu próxima aventura",
       resumen:
         "Cinco preguntas simples para encontrar un juego que encaje con tu tiempo y tu estilo de juego.",
-      imagen: "img/Carrusel index/carrousel_1.png",
+      imagen: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_hero.jpg",
       fecha: "2026-08-14",
       contenido: [
         "Antes de mirar una oferta, piensa cuánto tiempo quieres dedicarle y si prefieres jugar solo o acompañado. Un juego de 120 horas no es buena compra si solo tienes un par de tardes libres al mes.",
@@ -200,7 +200,7 @@
       titulo: "Tres claves para cuidar tu biblioteca digital",
       resumen:
         "Orden, seguridad y respaldos para mantener tus juegos y licencias siempre disponibles.",
-      imagen: "img/Carrusel index/carrousel_2.png",
+      imagen: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/library_hero.jpg",
       fecha: "2026-09-02",
       contenido: [
         "Usa contraseñas únicas para cada tienda y activa la verificación en dos pasos cuando la plataforma lo permita. La mayoría de las cuentas robadas se pierden por reutilizar la misma clave en varios sitios.",
