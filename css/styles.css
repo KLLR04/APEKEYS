@@ -50,6 +50,7 @@ body { min-height: 100vh; display: flex; flex-direction: column; }
 .home-content { min-width: 0; }
 .home-content > .container { max-width: none; }
 .side-banner { align-self: start; position: sticky; top: 1rem; display: flex; flex-direction: column; height: 780px; max-height: calc(100vh - 2rem); min-height: 600px; overflow: hidden; background: #121a27; border: 1px solid #304057; border-radius: .375rem; }
+.side-banner:hover { border-color: #72f2a8; }
 .side-banner img { display: block; width: 100%; height: 100%; min-height: 0; flex: 1; object-fit: cover; }
 .side-banner strong { padding: 1rem .5rem; color: #f5f7fb; text-align: center; font-size: 1.3rem; text-transform: uppercase; }
 .side-banner span { display: block; text-align: center; padding: 1rem .5rem; font-size: 1rem; font-weight: bold; background: #72f2a8; color: #0b1018; }
@@ -82,6 +83,10 @@ h3 { font-size: 1.15rem; }
 .carrusel-principal .carousel-caption p { margin: 0; color: #a6b1c2; }
 .carrusel-principal .carousel-control-prev, .carrusel-principal .carousel-control-next { width: 9%; }
 .carrusel-principal .carousel-control-prev-icon, .carrusel-principal .carousel-control-next-icon { background-color: #0b1018; border-radius: .25rem; filter: none; }
+.coming-card { max-width: 1000px; margin: 0 auto; overflow: hidden; }
+.coming-image { width: 100%; max-height: 560px; object-fit: cover; }
+.coming-body { padding: 1.5rem; text-align: center; }
+.coming-label { display: inline-block; margin-bottom: .75rem; padding: .35rem .75rem; background: #72f2a8; color: #0b1018; font-weight: bold; border-radius: .25rem; }
 @media (max-width: 767px) {
   .carrusel-principal .carousel-item > img { height: 300px; }
   .carrusel-principal .carousel-caption { padding: .75rem 2rem 2rem; }
