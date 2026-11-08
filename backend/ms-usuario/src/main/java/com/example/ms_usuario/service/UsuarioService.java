@@ -20,7 +20,9 @@ import java.util.Locale;
 @Service
 public class UsuarioService {
 
-    private static final int LARGO_MINIMO_PASSWORD = 6;
+    // mismas reglas que el frontend: entre 4 y 10 caracteres
+    static final int LARGO_MINIMO_PASSWORD = 4;
+    static final int LARGO_MAXIMO_PASSWORD = 10;
 
     private final UsuarioRepository usuarioRepository;
     private final TipoUsuarioRepository tipoUsuarioRepository;
@@ -105,7 +107,7 @@ public class UsuarioService {
     }
 
     // actualizar nombre apellido y tipo de un usuario como administrador
-    public Usuario actualizar(String email, UsuarioActualizarDTO datos) {
+    public Usuario actualizar(String email, UsuarioActualizarDTO datos, String emailSesion) {
 
         Usuario usuario = buscarPorEmail(email);
 
@@ -128,6 +130,16 @@ public class UsuarioService {
                         HttpStatus.BAD_REQUEST,
                         "El tipo de usuario indicado no existe"
                 ));
+
+        // un administrador no puede quitarse su propio rol y dejar el sistema sin acceso
+        if (esMismoUsuario(usuario.getEmail(), emailSesion)
+                && !DataInitializer.ROL_ADMINISTRADOR.equalsIgnoreCase(tipoUsuario.getDescripcion())) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "No puedes quitarte tu propio rol de administrador"
+            );
+        }
 
         usuario.setNombre(datos.nombre().trim());
         usuario.setApellido(datos.apellido().trim());
@@ -166,9 +178,23 @@ public class UsuarioService {
     }
 
     // eliminar usuario por email
-    public void eliminar(String email) {
+    public void eliminar(String email, String emailSesion) {
+
         Usuario usuario = buscarPorEmail(email);
+
+        // un administrador no puede eliminar su propia cuenta
+        if (esMismoUsuario(usuario.getEmail(), emailSesion)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "No puedes eliminar tu propia cuenta"
+            );
+        }
+
         usuarioRepository.delete(usuario);
+    }
+
+    private boolean esMismoUsuario(String email, String emailSesion) {
+        return emailSesion != null && normalizarEmail(emailSesion).equals(normalizarEmail(email));
     }
 
     private String normalizarEmail(String email) {
@@ -189,10 +215,12 @@ public class UsuarioService {
 
     private void validarPassword(String password) {
 
-        if (password.length() < LARGO_MINIMO_PASSWORD) {
+        if (password.length() < LARGO_MINIMO_PASSWORD
+                || password.length() > LARGO_MAXIMO_PASSWORD) {
+
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "La contraseña debe tener al menos 6 caracteres"
+                    "La contraseña debe tener entre 4 y 10 caracteres"
             );
         }
     }

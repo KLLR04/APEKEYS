@@ -4,6 +4,9 @@ import com.example.ms_pedidos.model.DetalleCarrito;
 import com.example.ms_pedidos.model.DetalleCarritoId;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +17,9 @@ public interface DetalleCarritoRepository
 
     // listar los productos de un carrito
     List<DetalleCarrito> findByCarrito_IdCarrito(Integer idCarrito);
+
+    // quitar un producto eliminado del catalogo de todos los carritos
+    @Modifying
+    @Query("DELETE FROM DetalleCarrito d WHERE d.productoId = :productoId")
+    int eliminarPorProducto(@Param("productoId") Integer productoId);
 }

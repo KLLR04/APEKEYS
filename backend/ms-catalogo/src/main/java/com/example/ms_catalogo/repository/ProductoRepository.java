@@ -19,6 +19,11 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     // verificar si una categoria tiene productos
     boolean existsByCategoria_IdCategoria(Integer idCategoria);
 
+    // verificar codigos repetidos al crear y al editar
+    boolean existsByCodigoIgnoreCase(String codigo);
+
+    boolean existsByCodigoIgnoreCaseAndIdProductoNot(String codigo, Integer idProducto);
+
     // descontar stock de forma atomica solo si alcanza y el producto esta disponible
     @Modifying
     @Query("""
@@ -29,6 +34,18 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
               AND p.disponibilidad = 'S'
             """)
     int descontarStock(
+            @Param("productoId") Integer productoId,
+            @Param("cantidad") Integer cantidad
+    );
+
+    // devolver unidades descontadas por un pedido que no se pudo guardar
+    @Modifying
+    @Query("""
+            UPDATE Producto p
+            SET p.stock = p.stock + :cantidad
+            WHERE p.idProducto = :productoId
+            """)
+    int reponerStock(
             @Param("productoId") Integer productoId,
             @Param("cantidad") Integer cantidad
     );

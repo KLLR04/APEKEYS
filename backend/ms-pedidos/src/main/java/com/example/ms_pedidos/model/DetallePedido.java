@@ -18,6 +18,10 @@ public class DetallePedido {
     @JoinColumn(name = "PEDIDO_id_pedido", nullable = false)
     private Pedido pedido;
 
+    // nombre del producto al momento de la compra para mostrar el historial aunque el producto se borre
+    @Column(name = "nombre_producto", length = 50)
+    private String nombreProducto;
+
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
 
@@ -40,6 +44,10 @@ public class DetallePedido {
         return pedido;
     }
 
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
     public Integer getCantidad() {
         return cantidad;
     }
@@ -60,6 +68,10 @@ public class DetallePedido {
 
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
     public void setCantidad(Integer cantidad) {

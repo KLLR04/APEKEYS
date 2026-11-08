@@ -70,16 +70,20 @@ public class UsuarioController {
     @PutMapping("/{email}")
     public UsuarioResponseDTO actualizar(
             @PathVariable String email,
-            @RequestBody UsuarioActualizarDTO datos) {
+            @RequestBody UsuarioActualizarDTO datos,
+            @AuthenticationPrincipal String emailSesion) {
 
-        return convertirDTO(usuarioService.actualizar(email, datos));
+        return convertirDTO(usuarioService.actualizar(email, datos, emailSesion));
     }
 
     // eliminar usuario como administrador
     @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminar(@PathVariable String email) {
-        usuarioService.eliminar(email);
+    public void eliminar(
+            @PathVariable String email,
+            @AuthenticationPrincipal String emailSesion) {
+
+        usuarioService.eliminar(email, emailSesion);
     }
 
     // convertir entidad a dto sin exponer la contrasena

@@ -15,7 +15,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-            JwtAuthenticationFilter jwtFilter) throws Exception {
+            JwtAuthenticationFilter jwtFilter,
+            InternalApiKeyFilter internalApiKeyFilter) throws Exception {
 
         http
             .csrf(csrf -> csrf.disable())
@@ -44,6 +45,9 @@ public class SecurityConfig {
 
                     // permitir la ruta de error
                     .requestMatchers("/error").permitAll()
+                    // permitir a ms catalogo limpiar referencias de productos eliminados
+                    .requestMatchers(HttpMethod.DELETE, "/api/carritos/interno/**")
+                            .hasRole("SERVICIO_INTERNO")
 
                     // restringir la gestion de todos los pedidos al administrador
                     .requestMatchers("/api/pedidos/admin", "/api/pedidos/admin/**")
@@ -65,6 +69,10 @@ public class SecurityConfig {
             .addFilterBefore(
                     jwtFilter,
                     UsernamePasswordAuthenticationFilter.class
+            )
+            .addFilterBefore(
+                    internalApiKeyFilter,
+                    JwtAuthenticationFilter.class
             );
 
         return http.build();

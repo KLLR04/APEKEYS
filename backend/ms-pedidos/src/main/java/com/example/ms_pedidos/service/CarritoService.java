@@ -152,6 +152,15 @@ public class CarritoService {
         return construirRespuesta(carrito);
     }
 
+    // quitar un producto eliminado del catalogo de todos los carritos
+    @Transactional
+    public int quitarProductoDeTodos(Integer productoId) {
+
+        validarProductoId(productoId);
+
+        return detalleCarritoRepository.eliminarPorProducto(productoId);
+    }
+
     private Carrito buscarOCrearCarrito(String email) {
 
         validarEmail(email);

@@ -51,6 +51,15 @@ public class FavoritoController {
     }
 
     // quitar producto de favoritos
+    // uso interno: ms catalogo borra los favoritos de un producto que se elimino
+    @DeleteMapping("/interno/producto/{productoId}")
+    public ResponseEntity<Void> eliminarFavoritosDeProducto(@PathVariable Integer productoId) {
+
+        favoritoService.eliminarFavoritosDeProducto(productoId);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping("/{productoId}")
     public ResponseEntity<Void> eliminarFavorito(
             @AuthenticationPrincipal UsuarioAutenticado usuario,

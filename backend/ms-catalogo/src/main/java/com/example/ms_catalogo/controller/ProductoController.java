@@ -1,6 +1,6 @@
 package com.example.ms_catalogo.controller;
 
-import com.example.ms_catalogo.dto.DescontarStockRequest;
+import com.example.ms_catalogo.dto.LineaStock;
 import com.example.ms_catalogo.model.Producto;
 import com.example.ms_catalogo.service.ProductoService;
 
@@ -59,16 +59,21 @@ public class ProductoController {
         return ResponseEntity.noContent().build();
     }
 
-    // descontar stock desde ms pedidos con la clave interna
-    @PostMapping("/{id}/descontar-stock")
-    public ResponseEntity<Void> descontarStock(
-            @PathVariable Integer id,
-            @RequestBody DescontarStockRequest datos) {
+    // descontar el stock de un pedido completo desde ms pedidos con la clave interna
+    // se descuentan todas las lineas o ninguna
+    @PostMapping("/descontar-stock")
+    public ResponseEntity<Void> descontarStock(@RequestBody List<LineaStock> lineas) {
 
-        productoService.descontarStock(
-                id,
-                datos == null ? null : datos.cantidad()
-        );
+        productoService.descontarStock(lineas);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    // devolver stock si ms pedidos no pudo guardar el pedido
+    @PostMapping("/reponer-stock")
+    public ResponseEntity<Void> reponerStock(@RequestBody List<LineaStock> lineas) {
+
+        productoService.reponerStock(lineas);
 
         return ResponseEntity.noContent().build();
     }

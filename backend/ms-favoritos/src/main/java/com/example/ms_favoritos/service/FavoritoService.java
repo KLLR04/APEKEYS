@@ -93,6 +93,15 @@ public class FavoritoService {
         favoritoRepository.delete(favorito);
     }
 
+    // borrar los favoritos de todos los usuarios para un producto eliminado del catalogo
+    @Transactional
+    public int eliminarFavoritosDeProducto(Integer productoId) {
+
+        validarProductoId(productoId);
+
+        return favoritoRepository.eliminarPorProducto(productoId);
+    }
+
     private void validarEmail(String email) {
         if (email == null || email.isBlank()) {
             throw new ResponseStatusException(

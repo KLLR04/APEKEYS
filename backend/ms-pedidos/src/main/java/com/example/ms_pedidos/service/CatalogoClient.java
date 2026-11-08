@@ -1,6 +1,6 @@
 package com.example.ms_pedidos.service;
 
-import com.example.ms_pedidos.dto.DescontarStockRequest;
+import com.example.ms_pedidos.dto.LineaStock;
 import com.example.ms_pedidos.dto.ProductoCatalogoResponse;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class CatalogoClient {
@@ -62,32 +64,27 @@ public class CatalogoClient {
 
         } catch (ResponseStatusException e) {
             throw e;
-
-        } catch (RestClientException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_GATEWAY,
-                    "No fue posible consultar MS_CATALOGO",
-                    e
-            );
+        } catch (RestClientException | IllegalStateException e) {
+            throw catalogoNoDisponible("No fue posible consultar MS_CATALOGO", e);
         }
     }
 
-    // pedir a ms catalogo que descuente stock usando la clave interna
-    public void descontarStock(Integer productoId, Integer cantidad) {
+    // descontar el stock de todo el pedido en una sola llamada: ms catalogo descuenta todo o nada
+    public void descontarStock(List<LineaStock> lineas) {
 
         try {
             catalogoRestClient.post()
-                    .uri("/api/productos/{id}/descontar-stock", productoId)
+                    .uri("/api/productos/descontar-stock")
                     .header("X-Internal-Api-Key", internalApiKey)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(new DescontarStockRequest(cantidad))
+                    .body(lineas)
                     .retrieve()
                     .onStatus(
                             status -> status.value() == 409,
                             (request, response) -> {
                                 throw new ResponseStatusException(
                                         HttpStatus.CONFLICT,
-                                        "Stock insuficiente para el producto " + productoId
+                                        "Uno de los productos se quedo sin stock. Revisa tu carrito"
                                 );
                             }
                     )
@@ -104,13 +101,25 @@ public class CatalogoClient {
 
         } catch (ResponseStatusException e) {
             throw e;
-
-        } catch (RestClientException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_GATEWAY,
-                    "No fue posible descontar stock en MS_CATALOGO",
-                    e
-            );
+        } catch (RestClientException | IllegalStateException e) {
+            throw catalogoNoDisponible("No fue posible descontar stock en MS_CATALOGO", e);
         }
+    }
+
+    // devolver el stock descontado si el pedido no se pudo guardar
+    public void reponerStock(List<LineaStock> lineas) {
+
+        catalogoRestClient.post()
+                .uri("/api/productos/reponer-stock")
+                .header("X-Internal-Api-Key", internalApiKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(lineas)
+                .retrieve()
+                .toBodilessEntity();
+    }
+
+    // ms catalogo apagado o todavia no registrado en eureka
+    private ResponseStatusException catalogoNoDisponible(String mensaje, Exception causa) {
+        return new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, mensaje, causa);
     }
 }

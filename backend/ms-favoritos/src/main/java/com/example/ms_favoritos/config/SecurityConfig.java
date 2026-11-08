@@ -2,6 +2,7 @@ package com.example.ms_favoritos.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,7 +15,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-            JwtAuthenticationFilter jwtFilter) throws Exception {
+            JwtAuthenticationFilter jwtFilter,
+            InternalApiKeyFilter internalApiKeyFilter) throws Exception {
 
         http
             .csrf(csrf -> csrf.disable())
@@ -43,6 +45,9 @@ public class SecurityConfig {
 
                     // permitir la ruta de error
                     .requestMatchers("/error").permitAll()
+                    // permitir a ms catalogo limpiar referencias de productos eliminados
+                    .requestMatchers(HttpMethod.DELETE, "/api/favoritos/interno/**")
+                            .hasRole("SERVICIO_INTERNO")
 
                     // permitir favoritos propios a cualquier usuario autenticado
                     .requestMatchers(
@@ -55,6 +60,10 @@ public class SecurityConfig {
             .addFilterBefore(
                     jwtFilter,
                     UsernamePasswordAuthenticationFilter.class
+            )
+            .addFilterBefore(
+                    internalApiKeyFilter,
+                    JwtAuthenticationFilter.class
             );
 
         return http.build();

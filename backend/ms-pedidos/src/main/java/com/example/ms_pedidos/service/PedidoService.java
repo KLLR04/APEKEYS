@@ -1,6 +1,7 @@
 package com.example.ms_pedidos.service;
 
 import com.example.ms_pedidos.dto.DetallePedidoResponse;
+import com.example.ms_pedidos.dto.LineaStock;
 import com.example.ms_pedidos.dto.PedidoResponse;
 import com.example.ms_pedidos.dto.ProductoCatalogoResponse;
 import com.example.ms_pedidos.model.Carrito;
@@ -14,7 +15,9 @@ import com.example.ms_pedidos.repository.PedidoRepository;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
@@ -38,23 +41,27 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final DetallePedidoRepository detallePedidoRepository;
     private final CatalogoClient catalogoClient;
+    private final TransactionTemplate transactionTemplate;
 
     public PedidoService(
             CarritoRepository carritoRepository,
             DetalleCarritoRepository detalleCarritoRepository,
             PedidoRepository pedidoRepository,
             DetallePedidoRepository detallePedidoRepository,
-            CatalogoClient catalogoClient) {
+            CatalogoClient catalogoClient,
+            PlatformTransactionManager transactionManager) {
 
         this.carritoRepository = carritoRepository;
         this.detalleCarritoRepository = detalleCarritoRepository;
         this.pedidoRepository = pedidoRepository;
         this.detallePedidoRepository = detallePedidoRepository;
         this.catalogoClient = catalogoClient;
+        this.transactionTemplate = new TransactionTemplate(transactionManager);
     }
 
     // crear pedido a partir del carrito del usuario
-    @Transactional
+    // 1 validar y calcular  2 descontar todo el stock en ms catalogo (todo o nada)
+    // 3 guardar el pedido; si el paso 3 falla se devuelve el stock del paso 2
     public PedidoResponse crearPedido(String email) {
 
         validarEmail(email);
@@ -78,8 +85,9 @@ public class PedidoService {
 
         BigDecimal total = BigDecimal.ZERO;
         List<DetallePedidoResponse> productosPedido = new ArrayList<>();
+        List<LineaStock> lineasStock = new ArrayList<>();
 
-        // validar cada producto con el catalogo y calcular subtotales
+        // validar cada producto con el catalogo y calcular subtotales con el precio final
         for (DetalleCarrito detalle : productosCarrito) {
 
             Integer productoId = detalle.getProductoId();
@@ -97,30 +105,32 @@ public class PedidoService {
             if (!"S".equalsIgnoreCase(producto.disponibilidad())) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
-                        "El producto " + productoId + " no esta disponible"
+                        "El producto " + producto.nombre() + " no esta disponible"
                 );
             }
 
             if (producto.stock() == null || producto.stock() < cantidad) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
-                        "Stock insuficiente para el producto " + productoId
+                        "Stock insuficiente para " + producto.nombre()
                 );
             }
 
-            if (producto.precio() == null || producto.precio().signum() < 0) {
+            BigDecimal precio = producto.precioFinal();
+
+            if (precio == null || precio.signum() < 0) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
                         "El producto tiene un precio invalido"
                 );
             }
 
-            BigDecimal subtotal = producto.precio().multiply(BigDecimal.valueOf(cantidad));
+            BigDecimal subtotal = precio.multiply(BigDecimal.valueOf(cantidad));
 
             if (subtotal.compareTo(MONTO_MAXIMO) > 0) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
-                        "El subtotal del producto " + productoId + " supera el monto permitido"
+                        "El subtotal de " + producto.nombre() + " supera el monto permitido"
                 );
             }
 
@@ -128,10 +138,13 @@ public class PedidoService {
 
             productosPedido.add(new DetallePedidoResponse(
                     productoId,
+                    producto.nombre(),
                     cantidad,
-                    producto.precio(),
+                    precio,
                     subtotal
             ));
+
+            lineasStock.add(new LineaStock(productoId, cantidad));
         }
 
         // validar el limite de number seis del mer
@@ -142,7 +155,44 @@ public class PedidoService {
             );
         }
 
-        // guardar el pedido
+        // descontar todo el pedido en una sola operacion: si falta stock de uno no se descuenta ninguno
+        catalogoClient.descontarStock(lineasStock);
+
+        final BigDecimal totalPedido = total;
+
+        try {
+            // guardar pedido y detalle y vaciar el carrito en una transaccion local
+            Pedido guardado = transactionTemplate.execute(estado ->
+                    guardarPedido(email, totalPedido, productosPedido, productosCarrito));
+
+            return new PedidoResponse(
+                    guardado.getIdPedido(),
+                    guardado.getFechaPedido(),
+                    guardado.getEstado(),
+                    guardado.getTotalAPagar(),
+                    guardado.getUsuarioEmail(),
+                    productosPedido
+            );
+
+        } catch (RuntimeException e) {
+
+            // compensar: devolver el stock que ya se desconto para no perder unidades
+            try {
+                catalogoClient.reponerStock(lineasStock);
+            } catch (RuntimeException errorReponer) {
+                e.addSuppressed(errorReponer);
+            }
+
+            throw e;
+        }
+    }
+
+    private Pedido guardarPedido(
+            String email,
+            BigDecimal total,
+            List<DetallePedidoResponse> productosPedido,
+            List<DetalleCarrito> productosCarrito) {
+
         Pedido pedido = new Pedido();
         pedido.setUsuarioEmail(email);
         pedido.setFechaPedido(LocalDate.now());
@@ -151,13 +201,12 @@ public class PedidoService {
 
         pedido = pedidoRepository.save(pedido);
 
-        // guardar el detalle del pedido
         for (DetallePedidoResponse producto : productosPedido) {
 
             DetallePedido detallePedido = new DetallePedido();
-
             detallePedido.setPedido(pedido);
             detallePedido.setProductoId(producto.productoId());
+            detallePedido.setNombreProducto(producto.nombreProducto());
             detallePedido.setCantidad(producto.cantidad());
             detallePedido.setPrecioUnitario(producto.precioUnitario());
             detallePedido.setSubtotal(producto.subtotal());
@@ -165,22 +214,11 @@ public class PedidoService {
             detallePedidoRepository.save(detallePedido);
         }
 
-        // descontar stock en ms catalogo producto por producto
-        for (DetallePedidoResponse producto : productosPedido) {
-            catalogoClient.descontarStock(producto.productoId(), producto.cantidad());
-        }
-
         // vaciar el carrito despues de crear el pedido
         detalleCarritoRepository.deleteAll(productosCarrito);
+        detalleCarritoRepository.flush();
 
-        return new PedidoResponse(
-                pedido.getIdPedido(),
-                pedido.getFechaPedido(),
-                pedido.getEstado(),
-                pedido.getTotalAPagar(),
-                pedido.getUsuarioEmail(),
-                productosPedido
-        );
+        return pedido;
     }
 
     // listar los pedidos del usuario autenticado
@@ -286,6 +324,7 @@ public class PedidoService {
                         .stream()
                         .map(detalle -> new DetallePedidoResponse(
                                 detalle.getProductoId(),
+                                detalle.getNombreProducto(),
                                 detalle.getCantidad(),
                                 detalle.getPrecioUnitario(),
                                 detalle.getSubtotal()

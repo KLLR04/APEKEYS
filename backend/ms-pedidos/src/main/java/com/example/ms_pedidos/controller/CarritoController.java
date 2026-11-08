@@ -73,6 +73,15 @@ public class CarritoController {
         return ResponseEntity.ok(carritoService.eliminarProducto(usuario.email(), productoId));
     }
 
+    // uso interno: ms catalogo quita de todos los carritos un producto que se elimino
+    @DeleteMapping("/interno/producto/{productoId}")
+    public ResponseEntity<Void> quitarProductoDeTodos(@PathVariable Integer productoId) {
+
+        carritoService.quitarProductoDeTodos(productoId);
+
+        return ResponseEntity.noContent().build();
+    }
+
     // vaciar mi carrito
     @DeleteMapping
     public ResponseEntity<CarritoResponse> vaciarCarrito(

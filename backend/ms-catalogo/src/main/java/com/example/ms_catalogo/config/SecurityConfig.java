@@ -47,10 +47,11 @@ public class SecurityConfig {
                     // permitir la ruta de error
                     .requestMatchers("/error").permitAll()
 
-                    // permitir descontar stock solo entre microservicios
+                    // permitir mover stock solo entre microservicios
                     .requestMatchers(
                             HttpMethod.POST,
-                            "/api/productos/*/descontar-stock"
+                            "/api/productos/descontar-stock",
+                            "/api/productos/reponer-stock"
                     ).hasRole("SERVICIO_INTERNO")
 
                     // permitir consultas publicas del catalogo

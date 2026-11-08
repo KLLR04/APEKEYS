@@ -17,12 +17,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class InternalApiKeyFilter extends OncePerRequestFilter {
 
-    private static final String INTERNAL_PATH_PREFIX = "/api/productos/";
-    private static final String INTERNAL_PATH_SUFFIX = "/descontar-stock";
+    // rutas que solo pueden llamar otros microservicios
+    private static final Set<String> RUTAS_INTERNAS = Set.of(
+            "/api/productos/descontar-stock",
+            "/api/productos/reponer-stock"
+    );
 
     private final String internalApiKey;
 
@@ -32,7 +36,7 @@ public class InternalApiKeyFilter extends OncePerRequestFilter {
         this.internalApiKey = internalApiKey;
     }
 
-    // aplicar el filtro solo a la ruta interna de descontar stock
+    // aplicar el filtro solo a las rutas internas de stock
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
 
@@ -40,8 +44,7 @@ public class InternalApiKeyFilter extends OncePerRequestFilter {
 
         return !(
                 "POST".equalsIgnoreCase(request.getMethod())
-                && path.startsWith(INTERNAL_PATH_PREFIX)
-                && path.endsWith(INTERNAL_PATH_SUFFIX)
+                && RUTAS_INTERNAS.contains(path)
         );
     }
 
