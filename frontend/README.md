@@ -36,6 +36,50 @@ npm run dev
 Los usuarios están en `db.json`: hay uno de cada rol (administrador, vendedor y cliente).
 Las credenciales de prueba aparecen en ese archivo.
 
+### Probar la API con Postman
+
+Con `npm run api` corriendo, json-server responde en `http://localhost:3000`. Cada cambio
+hecho desde Postman se guarda en `db.json` y se ve en la página al recargar (F5).
+
+| Acción | Método | URL | Body (raw → JSON) |
+|---|---|---|---|
+| Listar productos | `GET` | `/productos` | — |
+| Ver un producto | `GET` | `/productos/1` | — |
+| Crear producto | `POST` | `/productos` | producto completo (sin `id`, lo asigna json-server) |
+| Poner en oferta | `PATCH` | `/productos/1` | `{ "precioOferta": 19990 }` |
+| Quitar la oferta | `PATCH` | `/productos/1` | `{ "precioOferta": null }` |
+| Cambiar el stock | `PATCH` | `/productos/1` | `{ "stock": 50 }` |
+| Eliminar producto | `DELETE` | `/productos/1` | — |
+
+- **PATCH** cambia solo los campos enviados. **PUT** reemplaza el producto entero: si se envía
+  solo un campo, el resto se pierde.
+- Una oferta es válida si `precioOferta` es mayor que 0 y menor que `precio`. La tienda calcula
+  el porcentaje de descuento y muestra el juego en **Ofertas**.
+- Ids de productos: 1 Red Dead Redemption 2, 2 Metal Gear Solid Delta, 3 Helldivers 2,
+  4 Hollow Knight, 5 Resident Evil 4 Remake, 6 Zelda: Ocarina of Time.
+- Otras colecciones: `/usuarios`, `/ordenes`, `/mensajes`, `/blogs`, `/regiones`.
+
+### API externa: galería de gameplay (Steam)
+
+La ficha de cada juego muestra una **galería de capturas de gameplay** sacadas de la API pública
+de la tienda de Steam (`services/steam.ts`). No necesita clave: Vite reenvía `/steam-tienda/...`
+a `store.steampowered.com/api/...` para evitar el bloqueo CORS. Cada producto indica su
+`steamAppId` en `db.json`; las imágenes repetidas se descartan. Los juegos que no están en Steam
+(como Zelda) usan sus capturas propias del campo `galeria`. Sin internet, la galería muestra solo
+las capturas propias (o no aparece) y el resto de la tienda funciona igual.
+
+### API externa: SteamGridDB (opcional, no usada por la galería)
+
+El servicio `services/steamgriddb.ts` queda disponible para pedir arte de juegos a
+[SteamGridDB](https://www.steamgriddb.com). Para activarlo:
+
+1. Crea una clave gratis en <https://www.steamgriddb.com/profile/preferences/api>.
+2. Copia `.env.example` como `.env` y pega la clave después de `STEAMGRIDDB_API_KEY=`.
+3. Reinicia `npm run dev`.
+
+La clave la agrega el servidor de Vite (ver `vite.config.ts`), nunca llega al navegador, y `.env`
+no se sube a GitHub. Ambas APIs externas funcionan con `npm run dev` (usan el proxy de Vite).
+
 ## Pruebas unitarias (Jasmine + Karma)
 
 ```bash
@@ -54,6 +98,9 @@ Las pruebas están en `tests/` y cubren:
 | `componentes.spec.tsx` | Renderizado, props y renderizado condicional: `Precio`, `PasosCompra`, `Campo`, `ModalConfirmacion` (eventos y tecla Escape) |
 | `interaccion.spec.tsx` | Estado y eventos: `TarjetaProducto` con y sin sesión, formulario con `useFormulario`, servicios con `fetch` simulado (`spyOn`) |
 | `catalogo.spec.tsx` | Renderizado de listas: el Catálogo dibuja una tarjeta por producto activo, la vista Ofertas y el buscador filtran; el mensaje de error aparece solo cuando la API falla |
+| `contador.spec.tsx` | Contador de lanzamientos: cálculo de días/horas/minutos/segundos y el componente `ContadorLanzamiento` con y sin fecha cumplida |
+| `steamgriddb.spec.tsx` | Servicio de la API externa SteamGridDB con `fetch` simulado: rutas que llama, juego no encontrado y clave rechazada |
+| `steam.spec.tsx` | Servicio de capturas de Steam con `fetch` simulado: ruta que llama, límite de cantidad, quitar repetidas y juego no encontrado |
 
 ## Otros comandos
 

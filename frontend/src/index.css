@@ -25,12 +25,25 @@
   --bs-link-hover-color: #a0f6c4;
   --bs-link-hover-color-rgb: 160, 246, 196;
   --bs-link-decoration: none;
+  /* Tipografía: Inter para leer, Poppins para lo que debe destacar (estilo tiendas como Eneba) */
+  --ape-fuente-texto: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+  --ape-fuente-titulo: "Poppins", "Inter Variable", "Segoe UI", system-ui, sans-serif;
+  --bs-body-font-family: var(--ape-fuente-texto);
 }
 a { text-decoration: none; }
 #root { min-height: 100vh; display: flex; flex-direction: column; }
-h1 { font-size: 1.8rem; }
-h2 { font-size: 1.4rem; }
+body { -webkit-font-smoothing: antialiased; letter-spacing: -0.005em; }
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: var(--ape-fuente-titulo);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+h1 { font-size: 1.9rem; font-weight: 800; }
+h2 { font-size: 1.45rem; }
 h3 { font-size: 1.15rem; }
+.btn, .menu-principal, .eyebrow, .coming-label, .ribbon-oferta, .badge { font-family: var(--ape-fuente-titulo); font-weight: 600; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.08em; color: #72f2a8; }
+.card .fw-bold, .card strong { font-family: var(--ape-fuente-titulo); }
 
 .card { --bs-card-bg: #121a27; }
 .btn-primary {
@@ -183,3 +196,80 @@ h3 { font-size: 1.15rem; }
     .cart-item img { width: 70px; }
     .cart-item-right { grid-column: 2; }
   }
+
+/* ---- Inicio: fondo de Vice City que se difumina hacia el color de la tienda ---- */
+/* La imagen llega desde Inicio.tsx como variable CSS (--fondo-inicio).
+   ::before = la foto (un poco desenfocada); ::after = un velo con la paleta APEKEYS
+   que va de transparente arriba al azul oscuro de la página abajo. */
+/* overflow: clip recorta lo que el desenfoque empuja hacia afuera (sin esto, la imagen se montaba sobre el menú) */
+.inicio-fondo { position: relative; isolation: isolate; overflow: clip; margin-top: -2rem; padding-top: 2.5rem; }
+.inicio-fondo::before,
+.inicio-fondo::after { content: ""; position: absolute; inset: 0 0 auto 0; height: min(1100px, 130vh); z-index: -1; pointer-events: none; }
+.inicio-fondo::before {
+  background: var(--fondo-inicio) center top / cover no-repeat;
+  filter: blur(2px) saturate(1.2);
+  transform: scale(1.03); /* evita bordes claros que deja el desenfoque */
+  /* La foto se desvanece antes de su borde inferior: así la arena naranja no asoma como una franja */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 80%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 80%);
+}
+.inicio-fondo::after {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(114, 242, 168, 0.10), transparent 60%),
+    linear-gradient(180deg, #0b1018 0%, rgba(11, 16, 24, 0.15) 7rem, rgba(11, 16, 24, 0.45) 40%, rgba(11, 16, 24, 0.85) 65%, #0b1018 80%);
+}
+.inicio-fondo .side-banner { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); }
+
+/* ---- Contador de lanzamiento (componente ContadorLanzamiento) ---- */
+.contador-lanzamiento {
+  position: relative; overflow: hidden; isolation: isolate;
+  min-height: 300px; display: flex; align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12); border-top: 3px solid #72f2a8; border-radius: 0.5rem;
+  background: #121a27; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+/* La imagen ocupa el 70 % derecho del banner: así los personajes quedan a la vista
+   y el texto usa el lado izquierdo, donde la imagen se funde con el fondo oscuro. */
+.contador-fondo { position: absolute; top: 0; right: 0; bottom: 0; width: 70%; height: 100%; object-fit: cover; object-position: center 18%; z-index: -2; }
+.contador-lanzamiento::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, #121a27 0%, #121a27 30%, rgba(18, 26, 39, 0.75) 42%, rgba(18, 26, 39, 0) 58%);
+}
+.contador-contenido { padding: 2rem; max-width: min(46%, 520px); }
+.contador-etiqueta { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 999px; background: rgba(114, 242, 168, 0.15); color: #72f2a8; border: 1px solid rgba(114, 242, 168, 0.4); font-family: var(--ape-fuente-titulo); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+.contador-titulo { margin: 0.6rem 0 0.25rem; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5); }
+.contador-descripcion { color: #dbe2ec; margin-bottom: 0.25rem; }
+.contador-fecha { color: #a6b1c2; font-size: 0.9rem; margin-bottom: 1rem; }
+.contador-unidades { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.contador-caja { min-width: 76px; padding: 0.6rem 0.5rem; text-align: center; border-radius: 0.5rem; background: rgba(11, 16, 24, 0.7); border: 1px solid #304057; backdrop-filter: blur(6px); }
+.contador-numero { display: block; font-family: var(--ape-fuente-titulo); font-size: 2rem; font-weight: 800; line-height: 1.1; color: #f5f7fb; font-variant-numeric: tabular-nums; }
+.contador-texto { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #72f2a8; }
+.contador-listo { font-family: var(--ape-fuente-titulo); font-weight: 700; color: #72f2a8; }
+@media (max-width: 575.98px) {
+}
+/* Tablet y celular: la imagen arriba (completa) y el texto debajo */
+@media (max-width: 991.98px) {
+  .contador-lanzamiento { flex-direction: column; align-items: stretch; }
+  .contador-fondo { position: relative; width: 100%; height: auto; aspect-ratio: 16 / 9; z-index: auto; }
+  .contador-lanzamiento::after { inset: 0 0 auto 0; height: 0; }
+  .contador-contenido { max-width: none; padding: 1.25rem; margin-top: -3rem; position: relative; background: linear-gradient(180deg, rgba(18, 26, 39, 0), #121a27 3rem); }
+}
+@media (max-width: 575.98px) {
+  .contador-caja { min-width: 64px; }
+  .contador-numero { font-size: 1.5rem; }
+}
+
+/* Banner lateral de Zelda: la columna es angosta y el logo se cortaba,
+   así que se acerca la imagen hacia Link (parte baja); el nombre ya va escrito arriba. */
+.side-banner img.banner-zoom-link { object-position: 56% 100%; transform: scale(1.6); transform-origin: 56% 100%; }
+/* El título y la etiqueta quedan por encima de la imagen ampliada */
+.side-banner strong { position: relative; z-index: 1; background: #121a27; }
+.side-banner span { position: relative; z-index: 1; }
+
+/* ---- Galería de la ficha (imágenes de SteamGridDB) ---- */
+/* Cuadrícula fija 2x2 (1 columna en celular) para que todos los juegos se vean iguales. */
+.galeria-juego { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+@media (max-width: 575.98px) { .galeria-juego { grid-template-columns: 1fr; } }
+.galeria-item { display: block; overflow: hidden; border: 1px solid #304057; border-radius: 0.5rem; background: #121a27; }
+.galeria-item img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform 0.3s ease; }
+.galeria-item:hover { border-color: #72f2a8; }
+.galeria-item:hover img { transform: scale(1.04); }

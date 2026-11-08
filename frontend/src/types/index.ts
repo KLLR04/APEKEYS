@@ -17,6 +17,10 @@ export interface Producto {
   descripcion: string
   imagen: string
   activo: boolean
+  // Id del juego en la tienda de Steam (para traer capturas de gameplay). null si no está en Steam.
+  steamAppId?: number | null
+  // Capturas propias guardadas en public/img (para juegos que no están en Steam, ej. Nintendo).
+  galeria?: string[]
 }
 
 export interface Usuario {

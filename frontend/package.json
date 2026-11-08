@@ -13,6 +13,8 @@
     "test:watch": "karma start karma.conf.cjs"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
     "bootstrap": "^5.3.8",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

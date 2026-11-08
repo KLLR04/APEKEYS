@@ -3,6 +3,12 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 // Bootstrap primero; index.css después para que el tema de APEKEYS lo sobrescriba.
 import 'bootstrap/dist/css/bootstrap.min.css'
+// Fuentes instaladas con npm (vienen dentro del proyecto, no necesitan internet):
+// Inter para el texto y Poppins para títulos, botones y precios.
+import '@fontsource-variable/inter'
+import '@fontsource/poppins/600.css'
+import '@fontsource/poppins/700.css'
+import '@fontsource/poppins/800.css'
 import './index.css'
 import App from './App'
 import AuthProvider from './context/AuthProvider'

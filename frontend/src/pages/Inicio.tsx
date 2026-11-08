@@ -1,13 +1,18 @@
+import type { CSSProperties } from 'react'
 import { Link } from 'react-router'
 import Carrusel from '../components/Carrusel'
 import type { Diapositiva } from '../components/Carrusel'
 import TarjetaProducto from '../components/TarjetaProducto'
+import ContadorLanzamiento from '../components/ContadorLanzamiento'
+import { buscarLanzamiento } from '../data/lanzamientos'
 import { Cargando, ErrorApiMensaje } from '../components/MensajeEstado'
 import { useCarga } from '../hooks/useCarga'
 import { useTitulo } from '../hooks/useTitulo'
 import { listarProductos } from '../services/productos'
 import video from '../video/instrucciones-compra.mp4'
 import portada from '../img/video-portada.jpg'
+import fondoViceCity from '../img/Lanzamientos/vice-city.webp'
+import zeldaVertical from '../img/Lanzamientos/zelda-ocarina-vertical.webp'
 
 const STEAM = 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps'
 
@@ -44,6 +49,9 @@ const DIAPOSITIVAS: Diapositiva[] = [
   },
 ]
 
+// Lanzamiento destacado en el inicio. Para destacar otro juego, cambiar solo esta clave.
+const DESTACADO = buscarLanzamiento('gta6')
+
 export default function Inicio() {
   useTitulo('APEKEYS')
   const { datos, cargando, error } = useCarga(listarProductos)
@@ -55,79 +63,89 @@ export default function Inicio() {
     .slice(0, 8)
 
   return (
-    <div className="home-layout">
-      <Link className="side-banner" to="/proximamente/gta6">
-        <strong>
-          Grand Theft
-          <br />
-          Auto VI
-        </strong>
-        <img
-          src="https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/f7eab33a4989ce5f0cd89c70723909b3.jpg"
-          alt="Grand Theft Auto VI"
-          width="600"
-          height="900"
-        />
-        <span>Próximamente</span>
-      </Link>
+    // El fondo de Vice City se pasa como variable CSS; el difuminado lo hace .inicio-fondo en index.css.
+    <div className="inicio-fondo" style={{ '--fondo-inicio': `url(${fondoViceCity})` } as CSSProperties}>
+      <div className="home-layout">
+        <Link className="side-banner" to="/proximamente/gta6">
+          <strong>
+            Grand Theft
+            <br />
+            Auto VI
+          </strong>
+          <img
+            src="https://media-rockstargames-com.akamaized.net/mfe6/prod/__common/img/f7eab33a4989ce5f0cd89c70723909b3.jpg"
+            alt="Grand Theft Auto VI"
+            width="600"
+            height="900"
+          />
+          <span>Próximamente</span>
+        </Link>
 
-      <div className="home-content">
-        <div className="container">
-          <Carrusel diapositivas={DIAPOSITIVAS} />
-
-          <section className="mt-4">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h2 className="h4 text-white mb-0">Juegos destacados</h2>
-              <Link className="btn btn-outline-success btn-sm" to="/catalogo">
-                Ver productos
-              </Link>
-            </div>
-            {cargando && <Cargando />}
-            {error && <ErrorApiMensaje mensaje={error} />}
-            {datos && (
-              <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
-                {destacados.length === 0 ? (
-                  <div className="col-12">
-                    <div className="alert alert-light mb-0">No encontramos productos con esos filtros.</div>
-                  </div>
-                ) : (
-                  destacados.map((p) => (
-                    <div className="col" key={p.id}>
-                      <TarjetaProducto producto={p} />
-                    </div>
-                  ))
-                )}
+        <div className="home-content">
+          <div className="container">
+            {DESTACADO && (
+              <div className="mb-4">
+                <ContadorLanzamiento
+                  nombre={DESTACADO.nombre}
+                  fechaLanzamiento={DESTACADO.fechaLanzamiento}
+                  imagen={DESTACADO.imagen}
+                  descripcion={DESTACADO.descripcion}
+                  enlace={`/proximamente/${DESTACADO.clave}`}
+                />
               </div>
             )}
+
+            <Carrusel diapositivas={DIAPOSITIVAS} />
+
+            <section className="mt-4">
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h2 className="h4 text-white mb-0">Juegos destacados</h2>
+                <Link className="btn btn-outline-success btn-sm" to="/catalogo">
+                  Ver productos
+                </Link>
+              </div>
+              {cargando && <Cargando />}
+              {error && <ErrorApiMensaje mensaje={error} />}
+              {datos && (
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                  {destacados.length === 0 ? (
+                    <div className="col-12">
+                      <div className="alert alert-light mb-0">No encontramos productos con esos filtros.</div>
+                    </div>
+                  ) : (
+                    destacados.map((p) => (
+                      <div className="col" key={p.id}>
+                        <TarjetaProducto producto={p} />
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </section>
+          </div>
+
+          <section className="container mt-4 text-white">
+            <h2 className="h4">Cómo comprar</h2>
+            <p>Video de demostración del proceso de compra.</p>
+            <video className="w-100" style={{ maxWidth: 720 }} controls preload="metadata" poster={portada}>
+              <source src={video} type="video/mp4" />
+            </video>
+            <p className="small">
+              La compra se simula en el navegador. No se cobran pagos ni se envían claves.
+            </p>
           </section>
         </div>
 
-        <section className="container mt-4 text-white">
-          <h2 className="h4">Cómo comprar</h2>
-          <p>Video de demostración del proceso de compra.</p>
-          <video className="w-100" style={{ maxWidth: 720 }} controls preload="metadata" poster={portada}>
-            <source src={video} type="video/mp4" />
-          </video>
-          <p className="small">
-            La compra se simula en el navegador. No se cobran pagos ni se envían claves.
-          </p>
-        </section>
+        <Link className="side-banner" to="/ficha/6">
+          <strong>
+            Zelda
+            <br />
+            Ocarina of Time
+          </strong>
+          <img className="banner-zoom-link" src={zeldaVertical} alt="The Legend of Zelda: Ocarina of Time" width="1000" height="1500" />
+          <span>Ya disponible</span>
+        </Link>
       </div>
-
-      <Link className="side-banner" to="/proximamente/fc27">
-        <strong>
-          EA SPORTS
-          <br />
-          FC 27
-        </strong>
-        <img
-          src="https://drop-assets.ea.com/images/15VqAXZo2fThrwnnfx5cX7/5e8f03989e7dd09e7a150cb0ce784bec/fc-27-ultimate-plus-key-art-16x9.jpg?im=AspectCrop=(9,16),xPosition=0.72,yPosition=0.5;Resize=(720)&q=90"
-          alt="EA Sports FC 27"
-          width="600"
-          height="900"
-        />
-        <span>Próximamente</span>
-      </Link>
     </div>
   )
 }

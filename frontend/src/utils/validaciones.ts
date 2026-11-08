@@ -120,8 +120,10 @@ export function validarUrlImagen(valor: string): string | null {
   const url = String(valor || '').trim()
   if (!url) return null
   if (url.startsWith('data:image/')) return null
+  // Imágenes guardadas dentro del proyecto (carpeta public/img), ej. /img/productos/juego.webp
+  if (/^\/img\/[\w./-]+\.(png|jpe?g|webp|gif)$/i.test(url)) return null
   if (url.length > 500) return 'La URL admite un máximo de 500 caracteres.'
   if (!/^https?:\/\/.+/i.test(url))
-    return 'La imagen debe ser una URL que empiece con http:// o https://, o un archivo subido.'
+    return 'La imagen debe ser una URL que empiece con http:// o https://, una ruta /img/... o un archivo subido.'
   return null
 }

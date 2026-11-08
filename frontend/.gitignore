@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 coverage
+
+# Claves privadas (SteamGridDB): nunca se suben a GitHub
+.env
+.env.*
+!.env.example

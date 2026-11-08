@@ -72,7 +72,7 @@ export default function Catalogo({ categoriaFija, soloOfertas = false }: Props) 
               ? 'Juegos con descuento por tiempo limitado.'
               : esSoftware
                 ? 'Suscripciones y herramientas para completar tu equipo.'
-                : 'Juegos y software para PC, PlayStation y Xbox.'}
+                : 'Juegos y software para PC, PlayStation, Xbox y Nintendo.'}
           </p>
         </div>
       </div>

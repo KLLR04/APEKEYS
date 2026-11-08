@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import { Link, useParams } from 'react-router'
 import ImagenProducto from '../components/ImagenProducto'
+import GaleriaJuego from '../components/GaleriaJuego'
 import { Cargando, ErrorApiMensaje } from '../components/MensajeEstado'
 import { useCarga } from '../hooks/useCarga'
 import { useTitulo } from '../hooks/useTitulo'
@@ -144,6 +145,9 @@ function DetalleProducto({ producto, todos }: { producto: Producto; todos: Produ
           </p>
         </aside>
       </article>
+
+      {/* Capturas de gameplay: tienda de Steam o capturas propias (si nada responde, no se muestra) */}
+      <GaleriaJuego producto={producto} />
 
       {relacionados.length > 0 && (
         <section className="section" aria-labelledby="relacionados-titulo">

@@ -12,7 +12,8 @@
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg",
       "activo": true,
       "stockCritico": 5,
-      "precioOferta": 19990
+      "precioOferta": 19990,
+      "steamAppId": 1174180
     },
     {
       "id": 2,
@@ -26,7 +27,8 @@
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2417610/header.jpg",
       "activo": true,
       "stockCritico": 5,
-      "precioOferta": null
+      "precioOferta": null,
+      "steamAppId": 2417610
     },
     {
       "id": 3,
@@ -40,7 +42,8 @@
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/553850/header.jpg",
       "activo": true,
       "stockCritico": 5,
-      "precioOferta": 29990
+      "precioOferta": 29990,
+      "steamAppId": 553850
     },
     {
       "id": 4,
@@ -54,7 +57,8 @@
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg",
       "activo": true,
       "stockCritico": 5,
-      "precioOferta": null
+      "precioOferta": null,
+      "steamAppId": 367520
     },
     {
       "id": 5,
@@ -68,7 +72,26 @@
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/header.jpg",
       "activo": true,
       "stockCritico": 5,
-      "precioOferta": null
+      "precioOferta": null,
+      "steamAppId": 2050650
+    },
+    {
+      "id": 6,
+      "codigo": "GAM-006",
+      "nombre": "The Legend of Zelda: Ocarina of Time",
+      "categoria": "Aventura",
+      "plataforma": "Nintendo eShop",
+      "precio": 59990,
+      "stock": 25,
+      "descripcion": "El clásico de Nintendo 64 rehecho por completo para Nintendo Switch 2. Clave digital para Nintendo eShop.",
+      "imagen": "/img/productos/zelda-ocarina.webp",
+      "activo": true,
+      "stockCritico": 5,
+      "precioOferta": null,
+      "steamAppId": null,
+      "galeria": [
+        "/img/productos/zelda-gran-arbol-deku.webp"
+      ]
     }
   ],
   "usuarios": [

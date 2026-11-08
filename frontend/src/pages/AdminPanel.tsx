@@ -64,7 +64,9 @@ export default function AdminPanel() {
   async function guardarProducto(datos: Omit<Producto, 'id'>) {
     const editando = edicion?.producto
     const ok = await ejecutar(
-      () => (editando ? actualizarProducto({ ...datos, id: editando.id }) : crearProducto(datos)),
+      // Al editar se parte del producto original: así se conservan los campos que el formulario
+      // no muestra (precio de oferta, id de Steam, galería) y solo cambian los del formulario.
+      () => (editando ? actualizarProducto({ ...editando, ...datos, id: editando.id }) : crearProducto(datos)),
       editando ? 'Producto actualizado' : 'Producto creado',
     )
     if (ok) setEdicion(null)
