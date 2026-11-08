@@ -1,0 +1,207 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "codigo": "GAM-001",
+      "nombre": "Red Dead Redemption 2",
+      "categoria": "Mundo Abierto",
+      "plataforma": "Steam",
+      "precio": 29990,
+      "stock": 45,
+      "descripcion": "Aventura de acción ambientada en el lejano oeste.",
+      "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg",
+      "activo": true,
+      "stockCritico": 5
+    },
+    {
+      "id": 2,
+      "codigo": "GAM-002",
+      "nombre": "Metal Gear Solid Delta",
+      "categoria": "Acción",
+      "plataforma": "Steam",
+      "precio": 49990,
+      "stock": 12,
+      "descripcion": "Juego de acción y sigilo de la saga Metal Gear.",
+      "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2417610/header.jpg",
+      "activo": true,
+      "stockCritico": 5
+    },
+    {
+      "id": 3,
+      "codigo": "GAM-003",
+      "nombre": "Helldivers 2",
+      "categoria": "Acción",
+      "plataforma": "Steam",
+      "precio": 39990,
+      "stock": 20,
+      "descripcion": "Juego cooperativo de acción para hasta cuatro jugadores.",
+      "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/553850/header.jpg",
+      "activo": true,
+      "stockCritico": 5
+    },
+    {
+      "id": 4,
+      "codigo": "GAM-004",
+      "nombre": "Hollow Knight",
+      "categoria": "Plataformas",
+      "plataforma": "Steam",
+      "precio": 9990,
+      "stock": 30,
+      "descripcion": "Aventura de acción en un reino subterráneo.",
+      "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg",
+      "activo": true,
+      "stockCritico": 5
+    },
+    {
+      "id": 5,
+      "codigo": "GAM-005",
+      "nombre": "Resident Evil 4 Remake",
+      "categoria": "Terror",
+      "plataforma": "Steam",
+      "precio": 39990,
+      "stock": 8,
+      "descripcion": "Juego de acción y supervivencia contra criaturas infectadas.",
+      "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/header.jpg",
+      "activo": true,
+      "stockCritico": 5
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "run": "190110222",
+      "nombre": "Ana",
+      "apellidos": "Muñoz Silva",
+      "email": "admin@duoc.cl",
+      "password": "Admin123",
+      "rol": "admin",
+      "fechaNacimiento": "1995-03-12",
+      "region": "Región Metropolitana de Santiago",
+      "comuna": "Santiago",
+      "direccion": "Av. Casa Matriz 1234",
+      "activo": true
+    },
+    {
+      "run": "211234563",
+      "nombre": "Camila",
+      "apellidos": "Rojas Pérez",
+      "email": "cliente@gmail.com",
+      "password": "Cliente123",
+      "rol": "cliente",
+      "fechaNacimiento": "2002-07-25",
+      "region": "Región de Valparaíso",
+      "comuna": "Viña del Mar",
+      "direccion": "Calle Prueba 456",
+      "activo": true,
+      "id": 2
+    },
+    {
+      "id": 3,
+      "run": "185551238",
+      "nombre": "Diego",
+      "apellidos": "Pérez",
+      "email": "vendedor@duoc.cl",
+      "password": "Vendedor12",
+      "rol": "vendedor",
+      "region": "Región del Biobío",
+      "comuna": "Concepción",
+      "direccion": "Sucursal de prueba",
+      "activo": true
+    }
+  ],
+  "ordenes": [],
+  "mensajes": [],
+  "blogs": [
+    {
+      "id": 1,
+      "titulo": "Cómo elegir tu próxima aventura",
+      "resumen": "Cinco preguntas simples para encontrar un juego que encaje con tu tiempo y tu estilo de juego.",
+      "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/library_hero.jpg",
+      "fecha": "2026-08-14",
+      "contenido": [
+        "Antes de mirar una oferta, piensa cuánto tiempo quieres dedicarle y si prefieres jugar solo o acompañado. Un juego de 120 horas no es buena compra si solo tienes un par de tardes libres al mes.",
+        "Revisa plataforma, clasificación por edad, requisitos técnicos y modalidad (campaña, cooperativo o competitivo). En APEKEYS cada ficha indica la plataforma de la clave para que no te equivoques al canjear.",
+        "Por último, mira las reseñas recientes y no solo la nota general: muchos títulos mejoran bastante después de sus primeros parches. Una buena compra es la que realmente vas a poder disfrutar."
+      ]
+    },
+    {
+      "id": 2,
+      "titulo": "Tres claves para cuidar tu biblioteca digital",
+      "resumen": "Orden, seguridad y respaldos para mantener tus juegos y licencias siempre disponibles.",
+      "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/library_hero.jpg",
+      "fecha": "2026-09-02",
+      "contenido": [
+        "Usa contraseñas únicas para cada tienda y activa la verificación en dos pasos cuando la plataforma lo permita. La mayoría de las cuentas robadas se pierden por reutilizar la misma clave en varios sitios.",
+        "Guarda los correos de compra y los códigos de activación en una carpeta dedicada de tu correo. Si alguna vez necesitas soporte, ese comprobante es lo primero que te van a pedir.",
+        "Nunca compartas claves de activación en redes sociales, foros o chats públicos: una clave digital se canjea una sola vez y quien la use primero se queda con el juego."
+      ]
+    }
+  ],
+  "regiones": [
+    {
+      "id": 1,
+      "nombre": "Región Metropolitana de Santiago",
+      "comunas": [
+        "Santiago",
+        "Maipú",
+        "Puente Alto",
+        "La Florida",
+        "Las Condes",
+        "Ñuñoa",
+        "Providencia"
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "Región de Valparaíso",
+      "comunas": [
+        "Valparaíso",
+        "Viña del Mar",
+        "Quilpué",
+        "Villa Alemana",
+        "San Antonio"
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "Región del Biobío",
+      "comunas": [
+        "Concepción",
+        "Talcahuano",
+        "Chiguayante",
+        "San Pedro de la Paz",
+        "Los Ángeles"
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "Región de La Araucanía",
+      "comunas": [
+        "Temuco",
+        "Padre Las Casas",
+        "Villarrica",
+        "Angol"
+      ]
+    },
+    {
+      "id": 5,
+      "nombre": "Región de Ñuble",
+      "comunas": [
+        "Chillán",
+        "Chillán Viejo",
+        "San Carlos",
+        "Bulnes"
+      ]
+    },
+    {
+      "id": 6,
+      "nombre": "Región de Antofagasta",
+      "comunas": [
+        "Antofagasta",
+        "Calama",
+        "Tocopilla",
+        "Mejillones"
+      ]
+    }
+  ]
+}
