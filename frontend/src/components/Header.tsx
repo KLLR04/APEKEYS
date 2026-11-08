@@ -22,6 +22,9 @@ export default function Header() {
   const navigate = useNavigate()
   const [menuAbierto, setMenuAbierto] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  // El menú móvil recuerda en qué página se abrió: al navegar a otra, se cierra solo.
+  const [abiertoEn, setAbiertoEn] = useState<string | null>(null)
+  const movilAbierto = abiertoEn === pathname
 
   // Cierra el menú "Categorías" al hacer clic afuera o al apretar Escape.
   useEffect(() => {
@@ -80,13 +83,28 @@ export default function Header() {
           {usuario && <span className="small text-white">{usuario.nombre}</span>}
         </div>
       </div>
-      <nav className="navbar bg-body-tertiary">
-        <div className="contenedor-fluido justify-start gap-2">
+      <nav className="navbar bg-body-tertiary" aria-label="Menú principal">
+        <div className="container-fluid justify-content-start">
+          {/* Botón ☰: solo se ve en pantallas chicas (d-lg-none) */}
+          <button
+            className="navbar-toggler d-lg-none"
+            type="button"
+            aria-controls="menuPrincipal"
+            aria-expanded={movilAbierto}
+            aria-label="Abrir menú"
+            onClick={() => setAbiertoEn(movilAbierto ? null : pathname)}
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div id="menuPrincipal" className={`menu-principal ${movilAbierto ? 'abierto' : ''}`}>
           <Link className={claseNav(pathname === '/')} to="/">
             Inicio
           </Link>
           <Link className={claseNav(pathname === '/catalogo')} to="/catalogo">
             Productos
+          </Link>
+          <Link className={claseNav(pathname === '/ofertas')} to="/ofertas">
+            Ofertas
           </Link>
           <div className="dropdown me-2" ref={menuRef}>
             <button
@@ -133,6 +151,7 @@ export default function Header() {
               Cerrar sesión
             </button>
           )}
+          </div>
         </div>
       </nav>
     </header>

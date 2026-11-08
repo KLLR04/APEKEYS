@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth'
 import { useCarga } from '../hooks/useCarga'
 import { useTitulo } from '../hooks/useTitulo'
 import { useToast } from '../hooks/useToast'
+import { useConfirmar } from '../hooks/useConfirmar'
 import { listarRegiones } from '../services/contenido'
 import {
   actualizarUsuario,
@@ -22,6 +23,7 @@ export default function AdminUsuarios() {
   useTitulo('Mantenedor de usuarios | APEKEYS')
   const { usuario: sesion, cerrarSesion } = useAuth()
   const { mostrar } = useToast()
+  const confirmar = useConfirmar()
   const navigate = useNavigate()
   const usuariosQ = useCarga(listarUsuarios)
   const regionesQ = useCarga(listarRegiones)
@@ -67,14 +69,17 @@ export default function AdminUsuarios() {
     ejecutar(() => modificarUsuario(u.id, { activo: !u.activo }), u.activo ? 'Usuario desactivado' : 'Usuario activado')
   }
 
-  function eliminar(u: Usuario) {
+  async function eliminar(u: Usuario) {
     if (esUltimoAdmin(u)) {
       mostrar('Debe quedar al menos un administrador activo.', true)
       return
     }
-    const ok = window.confirm(
-      `Eliminar usuario\n¿Eliminar la cuenta de ${u.nombre} ${u.apellidos}? Esta acción no se puede deshacer.`,
-    )
+    const ok = await confirmar({
+      titulo: 'Eliminar usuario',
+      mensaje: `¿Eliminar la cuenta de ${u.nombre} ${u.apellidos}? Esta acción no se puede deshacer.`,
+      textoConfirmar: 'Eliminar',
+      peligroso: true,
+    })
     if (!ok) return
     if (edicion?.usuario?.id === u.id) setEdicion(null)
     ejecutar(() => eliminarUsuario(u.id), 'Usuario eliminado')
@@ -92,7 +97,7 @@ export default function AdminUsuarios() {
   const error = usuariosQ.error || regionesQ.error
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <div className="section-head">
         <div>
           <span className="eyebrow">Administración</span>
@@ -175,10 +180,10 @@ export default function AdminUsuarios() {
               </label>
             </div>
 
-            <div className="card tabla-responsive">
-              <table className="tabla tabla-hover align-middle mb-0">
-                <caption className="oculto-visual">Usuarios registrados</caption>
-                <thead className="tabla-clara">
+            <div className="card table-responsive">
+              <table className="table table-hover align-middle mb-0">
+                <caption className="visually-hidden">Usuarios registrados</caption>
+                <thead className="table-light">
                   <tr>
                     <th scope="col">RUN</th>
                     <th scope="col">Nombre</th>

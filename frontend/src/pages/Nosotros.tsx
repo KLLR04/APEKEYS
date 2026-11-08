@@ -4,7 +4,7 @@ export default function Nosotros() {
   useTitulo('Nosotros | APEKEYS')
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <div className="section-head">
         <div>
           <span className="eyebrow">Quiénes somos</span>

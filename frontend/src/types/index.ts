@@ -10,6 +10,8 @@ export interface Producto {
   categoria: string
   plataforma: string
   precio: number
+  // Precio rebajado (opcional). Si existe y es menor que precio, el producto está en oferta.
+  precioOferta?: number | null
   stock: number
   stockCritico: number
   descripcion: string
@@ -52,6 +54,9 @@ export interface Orden {
   total: number
   estado: string
   detalle: LineaOrden[]
+  // Datos que el cliente confirma en el checkout
+  comprador?: { nombre: string; email: string; direccion: string; comuna: string; region: string }
+  entrega?: string
 }
 
 export interface Mensaje {

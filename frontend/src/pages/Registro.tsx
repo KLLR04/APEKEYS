@@ -104,7 +104,7 @@ export default function Registro() {
   }
 
   return (
-    <div className="contenedor narrow">
+    <div className="container narrow">
       <div className="section-head">
         <div>
           <span className="eyebrow">Únete a APEKEYS</span>

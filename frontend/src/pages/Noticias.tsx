@@ -11,7 +11,7 @@ export default function Noticias() {
   const { datos, cargando, error } = useCarga(listarBlogs)
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <div className="section-head">
         <div>
           <span className="eyebrow">Noticias importantes</span>

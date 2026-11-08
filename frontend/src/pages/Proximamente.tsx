@@ -25,7 +25,7 @@ export default function Proximamente() {
   useTitulo(`${juego.nombre} | Próximamente`)
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <article className="card coming-card">
         <img className="coming-image" src={juego.imagen} alt={`Imagen de ${juego.nombre}`} />
         <div className="coming-body">

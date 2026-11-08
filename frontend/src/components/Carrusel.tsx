@@ -45,7 +45,7 @@ export default function Carrusel({ diapositivas }: { diapositivas: Diapositiva[]
         <div className="carousel-pista" style={{ transform: `translateX(-${actual * 100}%)` }}>
           {diapositivas.map((d) => (
             <div className="carousel-item" key={d.titulo}>
-              <img src={d.imagen} className="block w-full" alt={d.alt} />
+              <img src={d.imagen} className="d-block w-100" alt={d.alt} />
               <div className="carousel-caption">
                 <h2>{d.titulo}</h2>
                 <p>{d.texto}</p>
@@ -56,11 +56,11 @@ export default function Carrusel({ diapositivas }: { diapositivas: Diapositiva[]
       </div>
       <button className="carousel-control-prev" type="button" onClick={() => ir(actual - 1)}>
         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span className="sr-only">Anterior</span>
+        <span className="visually-hidden">Anterior</span>
       </button>
       <button className="carousel-control-next" type="button" onClick={() => ir(actual + 1)}>
         <span className="carousel-control-next-icon" aria-hidden="true"></span>
-        <span className="sr-only">Siguiente</span>
+        <span className="visually-hidden">Siguiente</span>
       </button>
     </div>
   )

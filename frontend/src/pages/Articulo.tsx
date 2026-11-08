@@ -16,7 +16,7 @@ export default function Articulo() {
   const noExiste = error !== undefined && /404/.test(error)
 
   return (
-    <div className="contenedor narrow">
+    <div className="container narrow">
       <nav className="breadcrumb" aria-label="Ruta de navegación">
         <Link to="/">Inicio</Link>
         <span>›</span>

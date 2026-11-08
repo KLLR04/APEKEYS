@@ -14,7 +14,7 @@ export default function Categorias() {
   const nombres = Object.keys(conteo).sort((a, b) => a.localeCompare(b, 'es'))
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <div className="section-head">
         <div>
           <span className="eyebrow">Encuentra tu estilo</span>
@@ -24,12 +24,14 @@ export default function Categorias() {
       </div>
       {cargando && <Cargando />}
       {error && <ErrorApiMensaje mensaje={error} />}
-      <section className="grid gap-4 sm:grid-cols-2 md:grid-cols-3" aria-label="Listado de categorías">
+      <section className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" aria-label="Listado de categorías">
         {nombres.map((nombre) => (
-          <Link key={nombre} to={`/catalogo?categoria=${encodeURIComponent(nombre)}`} className="card card-body h-full">
-            <strong>{nombre}</strong>
-            <span>{conteo[nombre] === 1 ? '1 producto' : `${conteo[nombre]} productos`}</span>
-          </Link>
+          <div className="col" key={nombre}>
+            <Link to={`/catalogo?categoria=${encodeURIComponent(nombre)}`} className="card card-body h-100">
+              <strong>{nombre}</strong>
+              <span>{conteo[nombre] === 1 ? '1 producto' : `${conteo[nombre]} productos`}</span>
+            </Link>
+          </div>
         ))}
       </section>
     </div>

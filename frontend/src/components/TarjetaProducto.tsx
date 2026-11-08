@@ -1,7 +1,8 @@
 import { Link } from 'react-router'
 import type { Producto } from '../types'
 import ImagenProducto from './ImagenProducto'
-import { formatearCLP } from '../utils/formato'
+import Precio from './Precio'
+import { enOferta, porcentajeDescuento } from '../utils/formato'
 import { useAgregarAlCarrito } from '../hooks/useAgregarAlCarrito'
 
 // Tarjeta de producto del catálogo. La imagen y el título llevan a la ficha;
@@ -10,23 +11,24 @@ export default function TarjetaProducto({ producto: p }: { producto: Producto })
   const agregarAlCarrito = useAgregarAlCarrito()
 
   return (
-    <article className="card product-card h-full">
+    <article className="card product-card h-100">
       <Link to={`/ficha/${p.id}`} className="product-link" aria-label={`Ver detalle de ${p.nombre}`}>
         <div className="product-image">
           <ImagenProducto src={p.imagen} alt={`Portada de ${p.nombre}`} loading="lazy" />
           {p.stock <= 0 && <span className="stock-ribbon">Agotado</span>}
+          {enOferta(p) && <span className="ribbon-oferta">-{porcentajeDescuento(p)}%</span>}
         </div>
       </Link>
-      <div className="card-body flex flex-col">
-        <span className="badge text-bg-secondary self-start mb-2">{p.categoria}</span>
+      <div className="card-body d-flex flex-column">
+        <span className="badge text-bg-secondary align-self-start mb-2">{p.categoria}</span>
         <Link to={`/ficha/${p.id}`} className="product-title-link">
           <h3 className="h5">{p.nombre}</h3>
         </Link>
         <div className="product-meta">
           {p.plataforma} · {p.stock > 0 ? `${p.stock} disponibles` : 'Sin stock'}
         </div>
-        <div className="flex justify-between items-center mt-auto">
-          <strong className="price">{formatearCLP(p.precio)}</strong>
+        <div className="d-flex justify-content-between align-items-center mt-auto">
+          <Precio producto={p} />
           <button
             type="button"
             className="btn btn-primary btn-sm"

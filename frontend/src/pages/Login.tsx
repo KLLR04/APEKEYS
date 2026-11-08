@@ -42,18 +42,18 @@ export default function Login() {
   }
 
   return (
-    <main className="h-screen overflow-auto md:overflow-hidden">
-      <div className="grid h-full grid-rows-1 md:grid-cols-2">
-        <div className="flex justify-center items-center p-6 bg-login h-full">
-          <div className="card sombra p-6 w-full" style={{ maxWidth: 450 }}>
-            <Link to="/" className="logo-box text-body mb-4">
+    <main className="login-page">
+      <div className="row g-0 min-vh-100">
+        <div className="col-12 col-md-6 d-flex justify-content-center align-items-center p-4 bg-login">
+          <div className="card shadow p-4 w-100" style={{ maxWidth: 450 }}>
+            <Link to="/" className="logo-box text-body mb-3">
               <img src={logo} alt="Logo APEKEYS" />
               <span>APEKEYS</span>
             </Link>
-            <h1 className="h3 text-center mb-6">Iniciar sesión</h1>
+            <h1 className="h3 text-center mb-4">Iniciar sesión</h1>
             <form onSubmit={enviar} noValidate>
               {mensaje && <div className="alert alert-danger">{mensaje}</div>}
-              <div className="field mb-4">
+              <div className="field mb-3">
                 <label className="form-label" htmlFor="email">
                   Correo electrónico
                 </label>
@@ -70,7 +70,7 @@ export default function Login() {
                 />
                 <span className="field-error">{errores.email}</span>
               </div>
-              <div className="field mb-4">
+              <div className="field mb-3">
                 <label className="form-label" htmlFor="password">
                   Contraseña
                 </label>
@@ -88,12 +88,12 @@ export default function Login() {
                 />
                 <span className="field-error">{errores.password}</span>
               </div>
-              <button className="btn btn-primary w-full" type="submit">
+              <button className="btn btn-primary w-100" type="submit">
                 Iniciar sesión
               </button>
             </form>
             <Link
-              className="btn btn-outline-secondary w-full mt-2"
+              className="btn btn-outline-secondary w-100 mt-2"
               to={next ? `/registro?next=${encodeURIComponent(next)}` : '/registro'}
             >
               Crear cuenta
@@ -106,8 +106,8 @@ export default function Login() {
             </p>
           </div>
         </div>
-        <div className="hidden md:block h-full">
-          <img src={banner} alt="Banner APEKEYS" className="w-full h-full" style={{ objectFit: 'cover' }} />
+        <div className="col-md-6 d-none d-md-block">
+          <img src={banner} alt="Banner APEKEYS" className="w-100 h-100 object-fit-cover" />
         </div>
       </div>
     </main>

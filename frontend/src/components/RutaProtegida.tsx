@@ -13,7 +13,7 @@ export default function RutaProtegida({ roles }: { roles?: Rol[] }) {
 
   if (cargando)
     return (
-      <div className="contenedor">
+      <div className="container">
         <Cargando />
       </div>
     )

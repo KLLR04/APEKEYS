@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth'
 import { useCarga } from '../hooks/useCarga'
 import { useTitulo } from '../hooks/useTitulo'
 import { useToast } from '../hooks/useToast'
+import { useConfirmar } from '../hooks/useConfirmar'
 import { listarOrdenes } from '../services/ordenes'
 import {
   actualizarProducto,
@@ -23,6 +24,7 @@ export default function AdminPanel() {
   useTitulo('Panel de control | APEKEYS')
   const { usuario, cerrarSesion } = useAuth()
   const { mostrar } = useToast()
+  const confirmar = useConfirmar()
   const navigate = useNavigate()
   const { hash } = useLocation()
   const esAdmin = usuario?.rol === 'admin'
@@ -69,8 +71,13 @@ export default function AdminPanel() {
     return ok
   }
 
-  function eliminar(p: Producto) {
-    const ok = window.confirm(`Eliminar producto\n¿Eliminar definitivamente "${p.nombre}"? Esta acción no se puede deshacer.`)
+  async function eliminar(p: Producto) {
+    const ok = await confirmar({
+      titulo: 'Eliminar producto',
+      mensaje: `¿Eliminar definitivamente "${p.nombre}"? Esta acción no se puede deshacer.`,
+      textoConfirmar: 'Eliminar',
+      peligroso: true,
+    })
     if (!ok) return
     if (edicion?.producto?.id === p.id) setEdicion(null)
     ejecutar(() => eliminarProducto(p.id), 'Producto eliminado')
@@ -97,7 +104,7 @@ export default function AdminPanel() {
   const error = productosQ.error || ordenesQ.error || usuariosQ.error
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <div className="section-head">
         <div>
           <span className="eyebrow">Administración</span>
@@ -126,9 +133,9 @@ export default function AdminPanel() {
 
         <section>
           {esAdmin && (
-            <div id="inventario" className="mb-6">
+            <div id="inventario" className="mb-4">
               <button
-                className="btn btn-primary mb-4"
+                className="btn btn-primary mb-3"
                 onClick={() => setEdicion({ producto: null, clave: Date.now() })}
               >
                 Nuevo producto
@@ -184,10 +191,10 @@ export default function AdminPanel() {
                   </label>
                 </div>
 
-                <div className="card tabla-responsive">
-                  <table className="tabla tabla-hover align-middle mb-0">
-                    <caption className="oculto-visual">Inventario de productos</caption>
-                    <thead className="tabla-clara">
+                <div className="card table-responsive">
+                  <table className="table table-hover align-middle mb-0">
+                    <caption className="visually-hidden">Inventario de productos</caption>
+                    <thead className="table-light">
                       <tr>
                         <th scope="col">Código</th>
                         <th scope="col">Nombre</th>
@@ -298,10 +305,10 @@ export default function AdminPanel() {
                 </Link>
               )}
             </div>
-            <div className="card tabla-responsive">
-              <table className="tabla tabla-hover align-middle mb-0">
-                <caption className="oculto-visual">Productos con stock bajo</caption>
-                <thead className="tabla-clara">
+            <div className="card table-responsive">
+              <table className="table table-hover align-middle mb-0">
+                <caption className="visually-hidden">Productos con stock bajo</caption>
+                <thead className="table-light">
                   <tr>
                     <th scope="col">Código</th>
                     <th scope="col">Producto</th>
@@ -349,10 +356,10 @@ export default function AdminPanel() {
                 <p>Cada compra descuenta automáticamente el stock del inventario.</p>
               </div>
             </div>
-            <div className="card tabla-responsive">
-              <table className="tabla tabla-hover align-middle mb-0">
-                <caption className="oculto-visual">Últimas órdenes registradas</caption>
-                <thead className="tabla-clara">
+            <div className="card table-responsive">
+              <table className="table table-hover align-middle mb-0">
+                <caption className="visually-hidden">Últimas órdenes registradas</caption>
+                <thead className="table-light">
                   <tr>
                     <th scope="col">Orden</th>
                     <th scope="col">Fecha</th>

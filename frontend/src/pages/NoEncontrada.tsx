@@ -6,7 +6,7 @@ export default function NoEncontrada() {
   useTitulo('Página no encontrada | APEKEYS')
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <div className="card empty-state">
         <h1>Página no encontrada</h1>
         <p>La dirección no existe o fue movida.</p>

@@ -6,7 +6,7 @@ import { useCarga } from '../hooks/useCarga'
 import { useTitulo } from '../hooks/useTitulo'
 import { useAgregarAlCarrito } from '../hooks/useAgregarAlCarrito'
 import { listarProductos, obtenerProducto } from '../services/productos'
-import { formatearCLP } from '../utils/formato'
+import Precio from '../components/Precio'
 import type { Producto } from '../types'
 
 export default function Ficha() {
@@ -23,7 +23,7 @@ export default function Ficha() {
   const noEncontrado = noExiste || (producto !== undefined && !producto.activo)
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <nav className="breadcrumb" aria-label="Ruta de navegación">
         <Link to="/">Inicio</Link>
         <span>›</span>
@@ -111,7 +111,7 @@ function DetalleProducto({ producto, todos }: { producto: Producto; todos: Produ
 
           <p className="muted">{producto.descripcion}</p>
 
-          <strong className="price detail-price">{formatearCLP(producto.precio)}</strong>
+          <Precio producto={producto} className="price detail-price" />
 
           <div className="qty-row">
             <label className="field" htmlFor="detailQty">
@@ -159,7 +159,7 @@ function DetalleProducto({ producto, todos }: { producto: Producto; todos: Produ
                 <ImagenProducto src={p.imagen} alt={`Portada de ${p.nombre}`} loading="lazy" />
                 <div className="related-body">
                   <strong>{p.nombre}</strong>
-                  <span className="price">{formatearCLP(p.precio)}</span>
+                  <Precio producto={p} />
                 </div>
               </Link>
             ))}

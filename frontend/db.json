@@ -11,7 +11,8 @@
       "descripcion": "Aventura de acción ambientada en el lejano oeste.",
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg",
       "activo": true,
-      "stockCritico": 5
+      "stockCritico": 5,
+      "precioOferta": 19990
     },
     {
       "id": 2,
@@ -24,7 +25,8 @@
       "descripcion": "Juego de acción y sigilo de la saga Metal Gear.",
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2417610/header.jpg",
       "activo": true,
-      "stockCritico": 5
+      "stockCritico": 5,
+      "precioOferta": null
     },
     {
       "id": 3,
@@ -37,7 +39,8 @@
       "descripcion": "Juego cooperativo de acción para hasta cuatro jugadores.",
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/553850/header.jpg",
       "activo": true,
-      "stockCritico": 5
+      "stockCritico": 5,
+      "precioOferta": 29990
     },
     {
       "id": 4,
@@ -50,7 +53,8 @@
       "descripcion": "Aventura de acción en un reino subterráneo.",
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/367520/header.jpg",
       "activo": true,
-      "stockCritico": 5
+      "stockCritico": 5,
+      "precioOferta": null
     },
     {
       "id": 5,
@@ -63,7 +67,8 @@
       "descripcion": "Juego de acción y supervivencia contra criaturas infectadas.",
       "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/header.jpg",
       "activo": true,
-      "stockCritico": 5
+      "stockCritico": 5,
+      "precioOferta": null
     }
   ],
   "usuarios": [
@@ -97,7 +102,7 @@
     },
     {
       "id": 3,
-      "run": "185551238",
+      "run": "185551237",
       "nombre": "Diego",
       "apellidos": "Pérez",
       "email": "vendedor@duoc.cl",

@@ -72,11 +72,11 @@ export default function Inicio() {
       </Link>
 
       <div className="home-content">
-        <div className="contenedor">
+        <div className="container">
           <Carrusel diapositivas={DIAPOSITIVAS} />
 
-          <section className="mt-6">
-            <div className="flex justify-between items-center mb-4">
+          <section className="mt-4">
+            <div className="d-flex justify-content-between align-items-center mb-3">
               <h2 className="h4 text-white mb-0">Juegos destacados</h2>
               <Link className="btn btn-outline-success btn-sm" to="/catalogo">
                 Ver productos
@@ -85,23 +85,27 @@ export default function Inicio() {
             {cargando && <Cargando />}
             {error && <ErrorApiMensaje mensaje={error} />}
             {datos && (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
                 {destacados.length === 0 ? (
-                  <div className="col-span-full -mx-2 alert alert-light">
-                    No encontramos productos con esos filtros.
+                  <div className="col-12">
+                    <div className="alert alert-light mb-0">No encontramos productos con esos filtros.</div>
                   </div>
                 ) : (
-                  destacados.map((p) => <TarjetaProducto key={p.id} producto={p} />)
+                  destacados.map((p) => (
+                    <div className="col" key={p.id}>
+                      <TarjetaProducto producto={p} />
+                    </div>
+                  ))
                 )}
               </div>
             )}
           </section>
         </div>
 
-        <section className="contenedor mt-6 text-white">
+        <section className="container mt-4 text-white">
           <h2 className="h4">Cómo comprar</h2>
           <p>Video de demostración del proceso de compra.</p>
-          <video className="w-full" style={{ maxWidth: 720 }} controls preload="metadata" poster={portada}>
+          <video className="w-100" style={{ maxWidth: 720 }} controls preload="metadata" poster={portada}>
             <source src={video} type="video/mp4" />
           </video>
           <p className="small">

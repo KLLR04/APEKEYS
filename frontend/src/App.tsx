@@ -6,6 +6,7 @@ import AdminUsuarios from './pages/AdminUsuarios'
 import Articulo from './pages/Articulo'
 import Carrito from './pages/Carrito'
 import Catalogo from './pages/Catalogo'
+import Checkout from './pages/Checkout'
 import Categorias from './pages/Categorias'
 import Contacto from './pages/Contacto'
 import Ficha from './pages/Ficha'
@@ -16,6 +17,7 @@ import Nosotros from './pages/Nosotros'
 import Noticias from './pages/Noticias'
 import Proximamente from './pages/Proximamente'
 import Registro from './pages/Registro'
+import { CompraExitosa, CompraFallida } from './pages/ResultadoCompra'
 
 // Tabla de rutas de la aplicación: qué página se dibuja para cada URL.
 function App() {
@@ -28,6 +30,7 @@ function App() {
         <Route path="/" element={<Inicio />} />
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/software" element={<Catalogo categoriaFija="Software" />} />
+        <Route path="/ofertas" element={<Catalogo soloOfertas />} />
         <Route path="/categorias" element={<Categorias />} />
         <Route path="/ficha/:id" element={<Ficha />} />
         <Route path="/registro" element={<Registro />} />
@@ -40,6 +43,9 @@ function App() {
         {/* Solo con sesión iniciada */}
         <Route element={<RutaProtegida />}>
           <Route path="/carrito" element={<Carrito />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/compra/exitosa/:id" element={<CompraExitosa />} />
+          <Route path="/compra/fallida" element={<CompraFallida />} />
         </Route>
 
         {/* Solo administrador y vendedor (el vendedor ve todo en modo consulta) */}

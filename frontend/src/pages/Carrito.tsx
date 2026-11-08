@@ -2,23 +2,21 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import ImagenProducto from '../components/ImagenProducto'
 import { Cargando, ErrorApiMensaje } from '../components/MensajeEstado'
-import { useAuth } from '../hooks/useAuth'
 import { useCarga } from '../hooks/useCarga'
 import { useCart } from '../hooks/useCart'
 import { useTitulo } from '../hooks/useTitulo'
 import { useToast } from '../hooks/useToast'
-import { crearOrden } from '../services/ordenes'
-import { listarProductos, modificarProducto } from '../services/productos'
-import { formatearCLP } from '../utils/formato'
-import type { ItemCarrito, LineaOrden, Producto } from '../types'
+import Precio from '../components/Precio'
+import PasosCompra from '../components/PasosCompra'
+import { listarProductos } from '../services/productos'
+import { formatearCLP, precioFinal } from '../utils/formato'
+import type { ItemCarrito, Producto } from '../types'
 
 export default function Carrito() {
   useTitulo('Carrito | APEKEYS')
-  const { usuario } = useAuth()
-  const { items, quitar, cambiarCantidad, reemplazar, vaciar } = useCart()
+  const { items, quitar, cambiarCantidad, reemplazar } = useCart()
   const { mostrar } = useToast()
-  const { datos: productos, cargando, error, recargar } = useCarga(listarProductos)
-  const [procesando, setProcesando] = useState(false)
+  const { datos: productos, cargando, error } = useCarga(listarProductos)
 
   // Se "sanea" el carrito contra el catálogo actual: se quitan productos eliminados,
   // desactivados o sin stock y se recortan cantidades que ya no caben en el stock.
@@ -64,73 +62,11 @@ export default function Carrito() {
     const producto = productos?.find((x) => x.id === item.productId)
     return producto ? [{ item, producto }] : []
   })
-  const total = filas.reduce((suma, { item, producto }) => suma + producto.precio * item.cantidad, 0)
-
-  async function finalizarCompra() {
-    if (!usuario || !productos || procesando) return
-    const ok = window.confirm(
-      `Confirmar compra\nCompra de demostración por ${formatearCLP(total)}. Se descontará el stock; no se realizan cobros ni envíos.`,
-    )
-    if (!ok) return
-
-    setProcesando(true)
-    try {
-      // Revisión final con el stock REAL de la API (otro cliente pudo comprar antes).
-      const actuales = await listarProductos()
-      const detalle: LineaOrden[] = []
-      for (const { item, producto } of filas) {
-        const p = actuales.find((x) => x.id === producto.id)
-        if (!p || !p.activo || p.precio !== producto.precio || item.cantidad > p.stock) {
-          mostrar('El catálogo cambió. Revisa el carrito.', true)
-          recargar()
-          return
-        }
-        detalle.push({
-          productId: p.id,
-          codigo: p.codigo,
-          nombre: p.nombre,
-          precio: p.precio,
-          cantidad: item.cantidad,
-          subtotal: p.precio * item.cantidad,
-        })
-      }
-
-      // Se descuenta el stock de cada producto y luego se registra la orden.
-      // Si algo falla a mitad de camino, se devuelve el stock que ya se había descontado.
-      const descontados: Producto[] = []
-      try {
-        for (const linea of detalle) {
-          const p = actuales.find((x) => x.id === linea.productId)!
-          await modificarProducto(p.id, { stock: p.stock - linea.cantidad })
-          descontados.push(p)
-        }
-        await crearOrden({
-          usuarioId: usuario.id,
-          usuario: usuario.email,
-          fecha: new Date().toISOString(),
-          total: detalle.reduce((suma, l) => suma + l.subtotal, 0),
-          estado: 'Simulada',
-          detalle,
-        })
-      } catch {
-        for (const p of descontados) await modificarProducto(p.id, { stock: p.stock }).catch(() => {})
-        mostrar('No se pudo guardar la compra.', true)
-        recargar()
-        return
-      }
-
-      vaciar()
-      recargar()
-      mostrar('Compra simulada. Stock actualizado y orden registrada.')
-    } catch (e) {
-      mostrar(e instanceof Error ? e.message : 'No se pudo guardar la compra.', true)
-    } finally {
-      setProcesando(false)
-    }
-  }
+  const total = filas.reduce((suma, { item, producto }) => suma + precioFinal(producto) * item.cantidad, 0)
 
   return (
-    <div className="contenedor">
+    <div className="container">
+      <PasosCompra actual={1} />
       <div className="section-head">
         <div>
           <span className="eyebrow">Tu selección</span>
@@ -180,9 +116,10 @@ export default function Carrito() {
                 <br />
                 <strong>{formatearCLP(total)}</strong>
               </div>
-              <button className="btn btn-primary" type="button" disabled={procesando} onClick={finalizarCompra}>
-                Finalizar compra
-              </button>
+              {/* El pago ya no ocurre aquí: se pasa al checkout (dirección y entrega) */}
+              <Link className="btn btn-primary" to="/checkout">
+                Ir a pagar
+              </Link>
             </section>
           )}
         </>
@@ -236,7 +173,7 @@ function FilaCarrito({ producto: p, cantidad, onCantidad, onQuitar }: PropsFila)
           <strong>{p.nombre}</strong>
         </Link>
         <div className="muted">
-          {p.plataforma} · {formatearCLP(p.precio)} c/u
+          {p.plataforma} · <Precio producto={p} className="" /> c/u
         </div>
         <label className="field" style={{ maxWidth: 130, marginTop: 8 }}>
           Cantidad
@@ -254,7 +191,7 @@ function FilaCarrito({ producto: p, cantidad, onCantidad, onQuitar }: PropsFila)
         </label>
       </div>
       <div className="cart-item-right">
-        <strong className="price">{formatearCLP(p.precio * cantidad)}</strong>
+        <strong className="price">{formatearCLP(precioFinal(p) * cantidad)}</strong>
         <button type="button" className="btn btn-secondary btn-sm" onClick={onQuitar}>
           Quitar
         </button>

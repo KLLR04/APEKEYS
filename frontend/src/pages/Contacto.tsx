@@ -15,7 +15,7 @@ export default function Contacto() {
   const { usuario, cargando } = useAuth()
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <div className="section-head">
         <div>
           <span className="eyebrow">Estamos para ayudarte</span>

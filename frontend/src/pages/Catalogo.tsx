@@ -5,18 +5,21 @@ import { Cargando, ErrorApiMensaje } from '../components/MensajeEstado'
 import { useCarga } from '../hooks/useCarga'
 import { useTitulo } from '../hooks/useTitulo'
 import { listarProductos } from '../services/productos'
+import { enOferta, precioFinal } from '../utils/formato'
 
 interface Props {
   // Si se indica, la página es un listado fijo de esa categoría (ej. "Software").
   categoriaFija?: string
+  // Si es true, solo muestra productos con precio de oferta (vista /ofertas).
+  soloOfertas?: boolean
 }
 
 // Una sola página para /catalogo y /software. Los filtros viven en la URL
 // (?buscar=...&categoria=...&orden=...), así se pueden compartir y el buscador del
 // encabezado funciona navegando a /catalogo?buscar=texto.
-export default function Catalogo({ categoriaFija }: Props) {
+export default function Catalogo({ categoriaFija, soloOfertas = false }: Props) {
   const esSoftware = categoriaFija === 'Software'
-  useTitulo(esSoftware ? 'Software | APEKEYS' : 'Productos | APEKEYS')
+  useTitulo(soloOfertas ? 'Ofertas | APEKEYS' : esSoftware ? 'Software | APEKEYS' : 'Productos | APEKEYS')
 
   const [params, setParams] = useSearchParams()
   const buscar = params.get('buscar') ?? ''
@@ -27,8 +30,8 @@ export default function Catalogo({ categoriaFija }: Props) {
 
   // El catálogo público solo muestra productos activos.
   const base = useMemo(
-    () => (datos ?? []).filter((p) => p.activo && (!categoriaFija || p.categoria === categoriaFija)),
-    [datos, categoriaFija],
+    () => (datos ?? []).filter((p) => p.activo && (!categoriaFija || p.categoria === categoriaFija) && (!soloOfertas || enOferta(p))),
+    [datos, categoriaFija, soloOfertas],
   )
   const categorias = useMemo(
     () => Array.from(new Set(base.map((p) => p.categoria))).sort((a, b) => a.localeCompare(b, 'es')),
@@ -45,8 +48,8 @@ export default function Catalogo({ categoriaFija }: Props) {
       return coincideCategoria && coincideTexto
     })
     .sort((a, b) => {
-      if (orden === 'precio-asc') return a.precio - b.precio
-      if (orden === 'precio-desc') return b.precio - a.precio
+      if (orden === 'precio-asc') return precioFinal(a) - precioFinal(b)
+      if (orden === 'precio-desc') return precioFinal(b) - precioFinal(a)
       return a.nombre.localeCompare(b.nombre, 'es')
     })
 
@@ -59,15 +62,17 @@ export default function Catalogo({ categoriaFija }: Props) {
   }
 
   return (
-    <div className="contenedor">
+    <div className="container">
       <div className="section-head">
         <div>
-          <span className="eyebrow">{esSoftware ? 'Licencias digitales' : 'Catálogo'}</span>
-          <h1>{esSoftware ? 'Software' : 'Productos'}</h1>
+          <span className="eyebrow">{soloOfertas ? 'Precios rebajados' : esSoftware ? 'Licencias digitales' : 'Catálogo'}</span>
+          <h1>{soloOfertas ? 'Ofertas' : esSoftware ? 'Software' : 'Productos'}</h1>
           <p>
-            {esSoftware
-              ? 'Suscripciones y herramientas para completar tu equipo.'
-              : 'Juegos y software para PC, PlayStation y Xbox.'}
+            {soloOfertas
+              ? 'Juegos con descuento por tiempo limitado.'
+              : esSoftware
+                ? 'Suscripciones y herramientas para completar tu equipo.'
+                : 'Juegos y software para PC, PlayStation y Xbox.'}
           </p>
         </div>
       </div>
@@ -126,13 +131,19 @@ export default function Catalogo({ categoriaFija }: Props) {
             {visibles.length === 1 ? '1 producto encontrado' : `${visibles.length} productos encontrados`}
           </p>
           <section
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3"
             aria-label={esSoftware ? 'Listado de software' : 'Listado de productos'}
           >
             {visibles.length === 0 ? (
-              <div className="col-span-full -mx-2 alert alert-light">No encontramos productos con esos filtros.</div>
+              <div className="col-12">
+                <div className="alert alert-light mb-0">No encontramos productos con esos filtros.</div>
+              </div>
             ) : (
-              visibles.map((p) => <TarjetaProducto key={p.id} producto={p} />)
+              visibles.map((p) => (
+                <div className="col" key={p.id}>
+                  <TarjetaProducto producto={p} />
+                </div>
+              ))
             )}
           </section>
         </>
