@@ -1,26 +1,30 @@
-# APEKEYS — entrega frontend
+# APEKEYS
 
-Abrir mediante un servidor local (por ejemplo, Live Server), comenzando en `index.html`.
+Tienda online de claves de videojuegos. Proyecto de **DSY1104 Desarrollo Full Stack 2** (Duoc UC).
 
-## Cuentas para la demostración
+Equipo: FR4004, Jonás y Bayron.
 
-| Rol | Correo | Contraseña |
+## Estructura del repositorio
+
+| Carpeta | Qué contiene | Cómo se usa |
 | --- | --- | --- |
-| Administrador | admin@duoc.cl | Admin123 |
-| Cliente | cliente@gmail.com | Cliente123 |
-| Vendedor | vendedor@duoc.cl | Vendedor12 |
+| [`frontend/`](frontend/) | **Entrega 2**: la tienda en React 19 + Vite + Bootstrap 5, con datos en json-server y rutas con react-router | Ver [`frontend/README.md`](frontend/README.md) |
+| [`backend/`](backend/) | API REST en Spring Boot con microservicios (Eureka, Gateway, usuarios, catálogo, pedidos, favoritos) | Ver [`backend/README.md`](backend/README.md) |
+| [`entrega1/`](entrega1/) | **Entrega 1**: el sitio original en HTML, CSS y JavaScript | Ver [`entrega1/README.md`](entrega1/README.md) |
 
-## Páginas del sitio
+## Inicio rápido (Entrega 2)
 
-- `index.html`: inicio.
-- `catalogo.html`: listado, búsqueda y filtros de productos.
-- `ficha.html?id=N`: detalle del producto seleccionado.
-- `admin.html`: panel administrativo e inventario.
-- `usuarios.html`: administración de cuentas.
-- `noticias.html`: listado de artículos.
-- `articulo.html?id=N`: contenido de un artículo.
-- `software.html`: catálogo de software.
-- `inventario.html`: redirección a `admin.html#inventario`.
-- `acceso-tienda.html`: redirección al catálogo.
+```bash
+cd frontend
+npm install
+npm run api
+```
 
-Los scripts conservan sus nombres: `catalogo.js` genera los listados y `producto.js` carga la ficha.
+En otra terminal:
+
+```bash
+cd frontend
+npm run dev
+```
+
+Luego abrir <http://localhost:5173>.
