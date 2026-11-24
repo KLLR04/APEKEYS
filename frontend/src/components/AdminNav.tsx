@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
 
-export default function AdminNav({ activo }: { activo: 'resumen' | 'usuarios' }) {
+export default function AdminNav({ activo }: { activo: 'resumen' | 'usuarios' | 'categorias' }) {
   const { usuario } = useAuth()
   const esAdmin = usuario?.rol === 'admin'
 
@@ -12,6 +12,11 @@ export default function AdminNav({ activo }: { activo: 'resumen' | 'usuarios' })
         Resumen
       </Link>
       {esAdmin && <Link to="/admin#inventario">Mantenedor de productos</Link>}
+      {esAdmin && (
+        <Link className={activo === 'categorias' ? 'active' : ''} to="/admin/categorias">
+          Mantenedor de categorías
+        </Link>
+      )}
       {esAdmin && (
         <Link className={activo === 'usuarios' ? 'active' : ''} to="/admin/usuarios">
           Mantenedor de usuarios

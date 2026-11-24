@@ -92,6 +92,19 @@
       "galeria": [
         "/img/productos/zelda-gran-arbol-deku.webp"
       ]
+    },
+    {
+      "codigo": "GAM-007",
+      "nombre": "Grand Theft Auto VI",
+      "categoria": "Acción",
+      "plataforma": "PlayStation",
+      "precio": 74989.99,
+      "stock": 35,
+      "stockCritico": 5,
+      "descripcion": "• Vive la nueva era del mundo abierto con Grand Theft Auto VI, la esperada superproducción de Rockstar Games para PlayStation 5 y Xbox Series X/S. Sumérgete en las calles de una Vice City renovada y todo el estado de Leonida junto a Lucía Caminos y Jason Duval, una pareja criminal envuelta en una peligrosa conspiración. Alterna entre ambos protagonistas, desafía la ley en golpes inolvidables y explora un mundo vibrante, sátira pura de la cultura actual, lleno de acción, libertad y adrenalina.",
+      "imagen": "https://i.ytimg.com/vi/mTK88IF6SUM/maxresdefault.jpg",
+      "activo": true,
+      "id": 7
     }
   ],
   "usuarios": [
@@ -230,6 +243,52 @@
         "Tocopilla",
         "Mejillones"
       ]
+    }
+  ],
+  "categorias": [
+    {
+      "id": 1,
+      "nombre": "Acción"
+    },
+    {
+      "id": 2,
+      "nombre": "Aventura"
+    },
+    {
+      "id": 3,
+      "nombre": "Battle Royale"
+    },
+    {
+      "id": 4,
+      "nombre": "Carreras"
+    },
+    {
+      "id": 5,
+      "nombre": "Deportes"
+    },
+    {
+      "id": 6,
+      "nombre": "Multijugador"
+    },
+    {
+      "id": 7,
+      "nombre": "Mundo Abierto"
+    },
+    {
+      "id": 8,
+      "nombre": "Plataformas"
+    },
+    {
+      "id": 9,
+      "nombre": "Rol"
+    },
+    {
+      "id": 10,
+      "nombre": "Software"
+    },
+    {
+      "id": 11,
+      "nombre": "Terror"
     }
   ]
 }

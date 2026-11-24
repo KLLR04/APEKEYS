@@ -8,6 +8,7 @@ import { useCarga } from '../hooks/useCarga'
 import { useTitulo } from '../hooks/useTitulo'
 import { useToast } from '../hooks/useToast'
 import { useConfirmar } from '../hooks/useConfirmar'
+import { listarCategorias } from '../services/categorias'
 import { listarOrdenes } from '../services/ordenes'
 import {
   actualizarProducto,
@@ -31,6 +32,7 @@ export default function AdminPanel() {
 
   const productosQ = useCarga(listarProductos)
   const ordenesQ = useCarga(listarOrdenes)
+  const categoriasQ = useCarga(listarCategorias)
   // El vendedor solo consulta: no necesita descargar los usuarios.
   const cargarUsuarios = useCallback(() => (esAdmin ? listarUsuarios() : Promise.resolve([])), [esAdmin])
   const usuariosQ = useCarga(cargarUsuarios)
@@ -103,7 +105,7 @@ export default function AdminPanel() {
     })
     .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
 
-  const error = productosQ.error || ordenesQ.error || usuariosQ.error
+  const error = productosQ.error || ordenesQ.error || usuariosQ.error || categoriasQ.error
 
   return (
     <div className="container">
@@ -143,12 +145,13 @@ export default function AdminPanel() {
                 Nuevo producto
               </button>
 
-              {edicion && (
+              {edicion && categoriasQ.datos && (
                 // key distinta cada vez que se abre: el formulario arranca limpio.
                 <FormularioProducto
                   key={edicion.clave}
                   producto={edicion.producto}
                   productos={productos}
+                  categorias={categoriasQ.datos.map((c) => c.nombre).sort((a, b) => a.localeCompare(b, 'es'))}
                   onGuardar={guardarProducto}
                   onCancelar={() => setEdicion(null)}
                 />

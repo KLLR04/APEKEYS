@@ -15,28 +15,17 @@ import {
 
 const MAX_IMAGEN_BYTES = 400 * 1024 // 400 KB: la imagen viaja dentro de db.json
 
-const CATEGORIAS = [
-  'Acción',
-  'Battle Royale',
-  'Carreras',
-  'Deportes',
-  'Multijugador',
-  'Mundo Abierto',
-  'Plataformas',
-  'Rol',
-  'Software',
-  'Terror',
-]
 const PLATAFORMAS = ['PC', 'Steam', 'PlayStation', 'Xbox']
 
 interface Props {
   producto: Producto | null // null = producto nuevo
   productos: Producto[] // para comprobar que código y nombre no se repitan
+  categorias: string[] // nombres que entrega el mantenedor de categorías
   onGuardar: (datos: Omit<Producto, 'id'>) => Promise<boolean>
   onCancelar: () => void
 }
 
-export default function FormularioProducto({ producto, productos, onGuardar, onCancelar }: Props) {
+export default function FormularioProducto({ producto, productos, categorias, onGuardar, onCancelar }: Props) {
   const { mostrar } = useToast()
   const panel = useRef<HTMLElement>(null)
   const esArchivo = !!producto?.imagen.startsWith('data:image/')
@@ -53,7 +42,8 @@ export default function FormularioProducto({ producto, productos, onGuardar, onC
     {
       codigo: producto?.codigo ?? '',
       nombre: producto?.nombre ?? '',
-      categoria: producto?.categoria ?? '',
+      // Si la categoría del producto ya no existe (se eliminó), queda vacía para elegir otra.
+      categoria: producto && categorias.includes(producto.categoria) ? producto.categoria : '',
       plataforma: producto?.plataforma ?? '',
       // Precio y stock quedan VACÍOS en un producto nuevo: hay que escribirlos a propósito.
       precio: producto ? String(producto.precio) : '',
@@ -210,7 +200,7 @@ export default function FormularioProducto({ producto, productos, onGuardar, onC
               onBlur={salir}
             >
               <option value="">Selecciona una categoría</option>
-              {CATEGORIAS.map((c) => (
+              {categorias.map((c) => (
                 <option key={c}>{c}</option>
               ))}
             </select>

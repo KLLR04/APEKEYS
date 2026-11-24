@@ -55,6 +55,7 @@ const DESTACADO = buscarLanzamiento('gta6')
 export default function Inicio() {
   useTitulo('APEKEYS')
   const { datos, cargando, error } = useCarga(listarProductos)
+  const productoGta6 = datos?.find((p) => p.codigo === 'GAM-007')
 
   // Destacados: los primeros 8 productos activos por orden alfabético.
   const destacados = (datos ?? [])
@@ -66,7 +67,10 @@ export default function Inicio() {
     // El fondo de Vice City se pasa como variable CSS; el difuminado lo hace .inicio-fondo en index.css.
     <div className="inicio-fondo" style={{ '--fondo-inicio': `url(${fondoViceCity})` } as CSSProperties}>
       <div className="home-layout">
-        <Link className="side-banner" to="/proximamente/gta6">
+        {/* Lleva a la ficha del producto GTA VI. Se busca por su código (no por el id) porque
+            el id lo asigna json-server y puede ser distinto en cada computador.
+            Si el producto aún no existe, lleva al catálogo. */}
+        <Link className="side-banner" to={productoGta6 ? `/ficha/${productoGta6.id}` : '/catalogo'}>
           <strong>
             Grand Theft
             <br />
@@ -78,7 +82,7 @@ export default function Inicio() {
             width="600"
             height="900"
           />
-          <span>Próximamente</span>
+          <span>Ya disponible</span>
         </Link>
 
         <div className="home-content">

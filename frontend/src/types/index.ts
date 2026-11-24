@@ -23,6 +23,11 @@ export interface Producto {
   galeria?: string[]
 }
 
+export interface Categoria {
+  id: number
+  nombre: string
+}
+
 export interface Usuario {
   id: number
   run: string

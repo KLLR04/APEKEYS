@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router'
 import Layout from './components/Layout'
 import RutaProtegida from './components/RutaProtegida'
 import AdminPanel from './pages/AdminPanel'
+import AdminCategorias from './pages/AdminCategorias'
 import AdminUsuarios from './pages/AdminUsuarios'
 import Articulo from './pages/Articulo'
 import Carrito from './pages/Carrito'
@@ -56,6 +57,7 @@ function App() {
         {/* Solo administrador */}
         <Route element={<RutaProtegida roles={['admin']} />}>
           <Route path="/admin/usuarios" element={<AdminUsuarios />} />
+          <Route path="/admin/categorias" element={<AdminCategorias />} />
         </Route>
 
         {/* Enlaces de las páginas antiguas */}
